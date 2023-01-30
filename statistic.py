@@ -9,11 +9,14 @@ import json
 #CWE-789 	Memory Allocation with Excessive Size Value
 #CWE-770: Allocation of Resources Without Limits or Throttling
 #268 79
+#405 143 original json
+#405 143 new json
 def output_dos():
 	protocal_dos_count = 0
 	exhaust_count = 0
 	memory_exhaust_count = 0
-	fp = open("/home/yaowen/IoT_study/circl-cve-search-expanded.json")
+	#fp = open("/home/yaowen/IoT_study/circl-cve-search-expanded.json")
+	fp = open("/home/yaowen/dos/circl-cve-search-expanded_20230130.json")
 	out_fp1 = open("output/protocol_dos_cve", "w+")
 	out_fp2 = open("output/exhaust", "w+")
 	out_fp3 = open("output/memory", "w+")
@@ -46,12 +49,14 @@ def output_dos_using_cwe():
 	protocal_dos_count = 0
 	exhaust_count = 0
 	memory_exhaust_count = 0
+	type_list = set()
 	fp = open("/home/yaowen/IoT_study/circl-cve-search-expanded.json")
 	out_fp1 = open("output/protocol_dos_cve", "w+")
 	out_fp2 = open("output/exhaust", "w+")
 	out_fp3 = open("output/memory", "w+")
 	lines = fp.readlines()
-	protocol_keywords = ["protocol", "http", "mqtt", "ftp", "dicom", "smtp", "rtsp"]
+	protocol_keywords = ["protocol", "http", "mqtt", "ftp", "dicom", "smtp", "rtsp", "ssh", "tls", "telnet"]
+	cwe_type_list = ["CWE-1050", "CWE-770", "CWE-400", "CWE-789", "CWE-1325", "CWE-404", "CWE-401"]
 	for line in lines:
 		vul_dict = json.loads(line)
 		cve_id = vul_dict['id']
@@ -60,9 +65,10 @@ def output_dos_using_cwe():
 		out_dict = {}
 		out_dict['id'] = cve_id
 		out_dict['cwe'] = cwe_type
+		type_list.add(cwe_type)
 		out_dict['summary'] = summary
 		content = summary
-		if (cwe_type == "CWE-400" or "exhaust" in content.lower()) and any(keyword in content.lower() for keyword in protocol_keywords):
+		if (any(cwe_type == cwe for cwe in cwe_type_list) or "exhaust" in content.lower()) and any(keyword in content.lower() for keyword in protocol_keywords):
 			exhaust_count +=1 
 			json.dump(out_dict, out_fp2, indent=4)
 			#out_fp2.write(cve_id+" "+cwe_type+"\n"+summary+"\n")
@@ -76,7 +82,9 @@ def output_dos_using_cwe():
 	out_fp1.close()
 	out_fp2.close()
 	out_fp3.close()
+	print(type_list)
 	print("count: ", protocal_dos_count, exhaust_count, memory_exhaust_count)
+
 
 def output_year_range():
 	year_range = set()
@@ -111,3 +119,5 @@ def extract_item(cve_id):
 output_dos_using_cwe()
 #extract_item("CVE-2022-22228")
 #extract_item("CVE-2017-7651")
+#extract_item("CVE-2021-0229") 
+#extract_item("CVE-2021-41039") 

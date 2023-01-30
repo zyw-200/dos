@@ -3,6 +3,14 @@
     "cwe": "CWE-400",
     "summary": "In all BIG-IP 13.1.x versions, when an iRule containing the HTTP::collect command is configured on a virtual server, undisclosed requests can cause Traffic Management Microkernel (TMM) to terminate."
 }{
+    "id": "CVE-2022-1473",
+    "cwe": "CWE-404",
+    "summary": "The OPENSSL_LH_flush() function, which empties a hash table, contains a bug that breaks reuse of the memory occuppied by the removed hash table entries. This function is used when decoding certificates or keys. If a long lived process periodically decodes certificates or keys its memory usage will expand without bounds and the process might be terminated by the operating system causing a denial of service. Also traversing the empty hash table entries will take increasingly more time. Typically such long lived processes might be TLS clients or TLS servers configured to accept client certificate authentication. The function was added in the OpenSSL 3.0 version thus older releases are not affected by the issue. Fixed in OpenSSL 3.0.3 (Affected 3.0.0,3.0.1,3.0.2)."
+}{
+    "id": "CVE-2022-39278",
+    "cwe": "CWE-400",
+    "summary": "Istio is an open platform-independent service mesh that provides traffic management, policy enforcement, and telemetry collection. Prior to versions 1.15.2, 1.14.5, and 1.13.9, the Istio control plane, istiod, is vulnerable to a request processing error, allowing a malicious attacker that sends a specially crafted or oversized message which results in the control plane crashing when the Kubernetes validating or mutating webhook service is exposed publicly. This endpoint is served over TLS port 15017, but does not require any authentication from the attacker. For simple installations, Istiod is typically only reachable from within the cluster, limiting the blast radius. However, for some deployments, especially external istiod topologies, this port is exposed over the public internet. Versions 1.15.2, 1.14.5, and 1.13.9 contain patches for this issue. There are no effective workarounds, beyond upgrading. This bug is due to an error in `regexp.Compile` in Go."
+}{
     "id": "CVE-2022-1259",
     "cwe": "CWE-400",
     "summary": "A flaw was found in Undertow. A potential security issue in flow control handling by the browser over HTTP/2 may cause overhead or a denial of service in the server. This flaw exists because of an incomplete fix for CVE-2021-3629."
@@ -11,21 +19,41 @@
     "cwe": "CWE-400",
     "summary": "Traefik (pronounced traffic) is a modern HTTP reverse proxy and load balancer that assists in deploying microservices. There is a potential vulnerability in Traefik managing HTTP/2 connections. A closing HTTP/2 server connection could hang forever because of a subsequent fatal error. This failure mode could be exploited to cause a denial of service. There has been a patch released in versions 2.8.8 and 2.9.0-rc5. There are currently no known workarounds."
 }{
+    "id": "CVE-2022-38371",
+    "cwe": "CWE-401",
+    "summary": "A vulnerability has been identified in Nucleus NET (All versions), Nucleus ReadyStart V3 (All versions), Nucleus Source Code (Versions including affected FTP server). The FTP server does not properly release memory resources that were reserved for incomplete connection attempts by FTP clients. This could allow a remote attacker to generate a denial of service condition on devices that incorporate a vulnerable version of the FTP server."
+}{
     "id": "CVE-2022-41556",
     "cwe": "CWE-401",
     "summary": "A resource leak in gw_backend.c in lighttpd 1.4.56 through 1.4.66 could lead to a denial of service (connection-slot exhaustion) after a large amount of anomalous TCP behavior by clients. It is related to RDHUP mishandling in certain HTTP/1.1 chunked situations. Use of mod_fastcgi is, for example, affected. This is fixed in 1.4.67."
+}{
+    "id": "CVE-2020-25644",
+    "cwe": "CWE-401",
+    "summary": "A memory leak flaw was found in WildFly OpenSSL in versions prior to 1.1.3.Final, where it removes an HTTP session. It may allow the attacker to cause OOM leading to a denial of service. The highest threat from this vulnerability is to system availability."
 }{
     "id": "CVE-2019-2602",
     "cwe": "CWE-400",
     "summary": "Vulnerability in the Java SE, Java SE Embedded component of Oracle Java SE (subcomponent: Libraries). Supported versions that are affected are Java SE: 7u211, 8u202, 11.0.2 and 12; Java SE Embedded: 8u201. Easily exploitable vulnerability allows unauthenticated attacker with network access via multiple protocols to compromise Java SE, Java SE Embedded. Successful attacks of this vulnerability can result in unauthorized ability to cause a hang or frequently repeatable crash (complete DOS) of Java SE, Java SE Embedded. Note: This vulnerability can only be exploited by supplying data to APIs in the specified Component without using Untrusted Java Web Start applications or Untrusted Java applets, such as through a web service. CVSS 3.0 Base Score 7.5 (Availability impacts). CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H)."
 }{
+    "id": "CVE-2021-32675",
+    "cwe": "CWE-770",
+    "summary": "Redis is an open source, in-memory database that persists on disk. When parsing an incoming Redis Standard Protocol (RESP) request, Redis allocates memory according to user-specified values which determine the number of elements (in the multi-bulk header) and size of each element (in the bulk header). An attacker delivering specially crafted requests over multiple connections can cause the server to allocate significant amount of memory. Because the same parsing mechanism is used to handle authentication requests, this vulnerability can also be exploited by unauthenticated users. The problem is fixed in Redis versions 6.2.6, 6.0.16 and 5.0.14. An additional workaround to mitigate this problem without patching the redis-server executable is to block access to prevent unauthenticated users from connecting to Redis. This can be done in different ways: Using network access control tools like firewalls, iptables, security groups, etc. or Enabling TLS and requiring users to authenticate using client side certificates."
+}{
     "id": "CVE-2022-3252",
     "cwe": "CWE-835",
     "summary": "Improper detection of complete HTTP body decompression SwiftNIO Extras provides a pair of helpers for transparently decompressing received HTTP request or response bodies. These two objects (HTTPRequestDecompressor and HTTPResponseDecompressor) both failed to detect when the decompressed body was considered complete. If trailing junk data was appended to the HTTP message body, the code would repeatedly attempt to decompress this data and fail. This would lead to an infinite loop making no forward progress, leading to livelock of the system and denial-of-service. This issue can be triggered by any attacker capable of sending a compressed HTTP message. Most commonly this is HTTP servers, as compressed HTTP messages cannot be negotiated for HTTP requests, but it is possible that users have configured decompression for HTTP requests as well. The attack is low effort, and likely to be reached without requiring any privilege or system access. The impact on availability is high: the process immediately becomes unavailable but does not immediately crash, meaning that it is possible for the process to remain in this state until an administrator intervenes or an automated circuit breaker fires. If left unchecked this issue will very slowly exhaust memory resources due to repeated buffer allocation, but the buffers are not written to and so it is possible that the processes will not terminate for quite some time. This risk can be mitigated by removing transparent HTTP message decompression. The issue is fixed by correctly detecting the termination of the compressed body as reported by zlib and refusing to decompress further data. The issue was found by Vojtech Rylko (https://github.com/vojtarylko) and reported publicly on GitHub."
 }{
+    "id": "CVE-2022-34917",
+    "cwe": "CWE-770",
+    "summary": "A security vulnerability has been identified in Apache Kafka. It affects all releases since 2.8.0. The vulnerability allows malicious unauthenticated clients to allocate large amounts of memory on brokers. This can lead to brokers hitting OutOfMemoryException and causing denial of service. Example scenarios: - Kafka cluster without authentication: Any clients able to establish a network connection to a broker can trigger the issue. - Kafka cluster with SASL authentication: Any clients able to establish a network connection to a broker, without the need for valid SASL credentials, can trigger the issue. - Kafka cluster with TLS authentication: Only clients able to successfully authenticate via TLS can trigger the issue. We advise the users to upgrade the Kafka installations to one of the 3.2.3, 3.1.2, 3.0.2, 2.8.2 versions."
+}{
     "id": "CVE-2020-3569",
     "cwe": "CWE-770",
     "summary": "Multiple vulnerabilities in the Distance Vector Multicast Routing Protocol (DVMRP) feature of Cisco IOS XR Software could allow an unauthenticated, remote attacker to either immediately crash the Internet Group Management Protocol (IGMP) process or make it consume available memory and eventually crash. The memory consumption may negatively impact other processes that are running on the device. These vulnerabilities are due to the incorrect handling of IGMP packets. An attacker could exploit these vulnerabilities by sending crafted IGMP traffic to an affected device. A successful exploit could allow the attacker to immediately crash the IGMP process or cause memory exhaustion, resulting in other processes becoming unstable. These processes may include, but are not limited to, interior and exterior routing protocols. Cisco will release software updates that address these vulnerabilities."
+}{
+    "id": "CVE-2008-2364",
+    "cwe": "CWE-770",
+    "summary": "The ap_proxy_http_process_response function in mod_proxy_http.c in the mod_proxy module in the Apache HTTP Server 2.0.63 and 2.2.8 does not limit the number of forwarded interim responses, which allows remote HTTP servers to cause a denial of service (memory consumption) via a large number of interim responses."
 }{
     "id": "CVE-2009-1890",
     "cwe": "CWE-400",
@@ -43,6 +71,10 @@
     "cwe": "CWE-400",
     "summary": "The byterange filter in the Apache HTTP Server 1.3.x, 2.0.x through 2.0.64, and 2.2.x through 2.2.19 allows remote attackers to cause a denial of service (memory and CPU consumption) via a Range header that expresses multiple overlapping ranges, as exploited in the wild in August 2011, a different vulnerability than CVE-2007-0086."
 }{
+    "id": "CVE-2011-0419",
+    "cwe": "CWE-770",
+    "summary": "Stack consumption vulnerability in the fnmatch implementation in apr_fnmatch.c in the Apache Portable Runtime (APR) library before 1.4.3 and the Apache HTTP Server before 2.2.18, and in fnmatch.c in libc in NetBSD 5.1, OpenBSD 4.8, FreeBSD, Apple Mac OS X 10.6, Oracle Solaris 10, and Android, allows context-dependent attackers to cause a denial of service (CPU and memory consumption) via *? sequences in the first argument, as demonstrated by attacks against mod_autoindex in httpd."
+}{
     "id": "CVE-2022-39158",
     "cwe": "CWE-400",
     "summary": "A vulnerability has been identified in RUGGEDCOM ROS RMC8388 (All versions < V5.6.0), RUGGEDCOM ROS RS416Pv2 (All versions < V5.6.0), RUGGEDCOM ROS RS416v2 (All versions < V5.6.0), RUGGEDCOM ROS RS900 (32M) (All versions < V5.6.0), RUGGEDCOM ROS RS900G (32M) (All versions < V5.6.0), RUGGEDCOM ROS RSG2100 (32M) (All versions < V5.6.0), RUGGEDCOM ROS RSG2288 (All versions < V5.6.0), RUGGEDCOM ROS RSG2300 (All versions < V5.6.0), RUGGEDCOM ROS RSG2300P (All versions < V5.6.0), RUGGEDCOM ROS RSG2488 (All versions < V5.6.0), RUGGEDCOM ROS RSG907R (All versions < V5.6.0), RUGGEDCOM ROS RSG908C (All versions < V5.6.0), RUGGEDCOM ROS RSG909R (All versions < V5.6.0), RUGGEDCOM ROS RSG910C (All versions < V5.6.0), RUGGEDCOM ROS RSG920P (All versions < V5.6.0), RUGGEDCOM ROS RSL910 (All versions < v5.6.0), RUGGEDCOM ROS RST2228 (All versions < v5.6.0), RUGGEDCOM ROS RST2228P (All versions < V5.6.0), RUGGEDCOM ROS RST916C (All versions < v5.6.0), RUGGEDCOM ROS RST916P (All versions < v5.6.0). Affected devices improperly handle partial HTTP requests which makes them vulnerable to slowloris attacks. This could allow a remote attacker to create a denial of service condition that persists until the attack ends."
@@ -51,13 +83,45 @@
     "cwe": "CWE-400",
     "summary": "HTTP V3 Denial of Service Vulnerability."
 }{
+    "id": "CVE-2022-36104",
+    "cwe": "CWE-770",
+    "summary": "TYPO3 is an open source PHP based web content management system released under the GNU GPL. In affected versions requesting invalid or non-existing resources via HTTP triggers the page error handler which again could retrieve content to be shown as an error message from another page. This leads to a scenario in which the application is calling itself recursively - amplifying the impact of the initial attack until the limits of the web server are exceeded. Users are advised to update to TYPO3 version 11.5.16 to resolve this issue. There are no known workarounds for this issue."
+}{
+    "id": "CVE-2022-32205",
+    "cwe": "CWE-770",
+    "summary": "A malicious server can serve excessive amounts of `Set-Cookie:` headers in a HTTP response to curl and curl < 7.84.0 stores all of them. A sufficiently large amount of (big) cookies make subsequent HTTP requests to this, or other servers to which the cookies match, create requests that become larger than the threshold that curl uses internally to avoid sending crazy large requests (1048576 bytes) and instead returns an error.This denial state might remain for as long as the same cookies are kept, match and haven't expired. Due to cookie matching rules, a server on `foo.example.com` can set cookies that also would match for `bar.example.com`, making it it possible for a \"sister server\" to effectively cause a denial of service for a sibling site on the same second level domain using this method."
+}{
+    "id": "CVE-2022-32206",
+    "cwe": "CWE-770",
+    "summary": "curl < 7.84.0 supports \"chained\" HTTP compression algorithms, meaning that a serverresponse can be compressed multiple times and potentially with different algorithms. The number of acceptable \"links\" in this \"decompression chain\" was unbounded, allowing a malicious server to insert a virtually unlimited number of compression steps.The use of such a decompression chain could result in a \"malloc bomb\", makingcurl end up spending enormous amounts of allocated heap memory, or trying toand returning out of memory errors."
+}{
     "id": "CVE-2014-0118",
     "cwe": "CWE-400",
     "summary": "The deflate_in_filter function in mod_deflate.c in the mod_deflate module in the Apache HTTP Server before 2.4.10, when request body decompression is enabled, allows remote attackers to cause a denial of service (resource consumption) via crafted request data that decompresses to a much larger size."
 }{
+    "id": "CVE-2022-40281",
+    "cwe": "CWE-401",
+    "summary": "An issue was discovered in Samsung TizenRT through 3.0_GBM (and 3.1_PRE). cyassl_connect_step2 in curl/vtls/cyassl.c has a missing X509_free after SSL_get_peer_certificate, leading to information disclosure."
+}{
+    "id": "CVE-2022-36324",
+    "cwe": "CWE-770",
+    "summary": "Affected devices do not properly handle the renegotiation of SSL/TLS parameters. This could allow an unauthenticated remote attacker to bypass the TCP brute force prevention and lead to a denial of service condition for the duration of the attack."
+}{
     "id": "CVE-2022-2048",
     "cwe": "CWE-400",
     "summary": "In Eclipse Jetty HTTP/2 server implementation, when encountering an invalid HTTP/2 request, the error handling has a bug that can wind up not properly cleaning up the active connections and associated resources. This can lead to a Denial of Service scenario where there are no enough resources left to process good requests."
+}{
+    "id": "CVE-2020-20230",
+    "cwe": "CWE-400",
+    "summary": "Mikrotik RouterOs before stable 6.47 suffers from an uncontrolled resource consumption in the sshd process. An authenticated remote attacker can cause a Denial of Service due to overloading the systems CPU."
+}{
+    "id": "CVE-2022-38153",
+    "cwe": "CWE-770",
+    "summary": "An issue was discovered in wolfSSL before 5.5.0 (when --enable-session-ticket is used); however, only version 5.3.0 is exploitable. Man-in-the-middle attackers or a malicious server can crash TLS 1.2 clients during a handshake. If an attacker injects a large ticket (more than 256 bytes) into a NewSessionTicket message in a TLS 1.2 handshake, and the client has a non-empty session cache, the session cache frees a pointer that points to unallocated memory, causing the client to crash with a \"free(): invalid pointer\" message. NOTE: It is likely that this is also exploitable during TLS 1.3 handshakes between a client and a malicious server. With TLS 1.3, it is not possible to exploit this as a man-in-the-middle."
+}{
+    "id": "CVE-2022-30522",
+    "cwe": "CWE-770",
+    "summary": "If Apache HTTP Server 2.4.53 is configured to do transformations with mod_sed in contexts where the input to mod_sed may be very large, mod_sed may make excessively large memory allocations and trigger an abort."
 }{
     "id": "CVE-2018-12122",
     "cwe": "CWE-400",
@@ -71,13 +135,53 @@
     "cwe": "CWE-400",
     "summary": "A denial of service vulnerability exists in the cgiserver.cgi session creation functionality of reolink RLC-410W v3.0.0.136_20121102. A specially-crafted HTTP request can lead to prevent users from logging in. An attacker can send an HTTP request to trigger this vulnerability."
 }{
+    "id": "CVE-2020-26418",
+    "cwe": "CWE-401",
+    "summary": "Memory leak in Kafka protocol dissector in Wireshark 3.4.0 and 3.2.0 to 3.2.8 allows denial of service via packet injection or crafted capture file."
+}{
+    "id": "CVE-2020-26420",
+    "cwe": "CWE-401",
+    "summary": "Memory leak in RTPS protocol dissector in Wireshark 3.4.0 and 3.2.0 to 3.2.8 allows denial of service via packet injection or crafted capture file."
+}{
     "id": "CVE-2021-29509",
     "cwe": "CWE-400",
     "summary": "Puma is a concurrent HTTP 1.1 server for Ruby/Rack applications. The fix for CVE-2019-16770 was incomplete. The original fix only protected existing connections that had already been accepted from having their requests starved by greedy persistent-connections saturating all threads in the same process. However, new connections may still be starved by greedy persistent-connections saturating all threads in all processes in the cluster. A `puma` server which received more concurrent `keep-alive` connections than the server had threads in its threadpool would service only a subset of connections, denying service to the unserved connections. This problem has been fixed in `puma` 4.3.8 and 5.3.1. Setting `queue_requests false` also fixes the issue. This is not advised when using `puma` without a reverse proxy, such as `nginx` or `apache`, because you will open yourself to slow client attacks (e.g. slowloris). The fix is very small and a git patch is available for those using unsupported versions of Puma."
 }{
+    "id": "CVE-2022-29404",
+    "cwe": "CWE-770",
+    "summary": "In Apache HTTP Server 2.4.53 and earlier, a malicious request to a lua script that calls r:parsebody(0) may cause a denial of service due to no default limit on possible input size."
+}{
+    "id": "CVE-2022-35191",
+    "cwe": "CWE-404",
+    "summary": "D-Link Wireless AC1200 Dual Band VDSL ADSL Modem Router DSL-3782 Firmware v1.01 allows unauthenticated attackers to cause a Denial of Service (DoS) via a crafted HTTP connection request."
+}{
+    "id": "CVE-2019-9511",
+    "cwe": "CWE-770",
+    "summary": "Some HTTP/2 implementations are vulnerable to window size manipulation and stream prioritization manipulation, potentially leading to a denial of service. The attacker requests a large amount of data from a specified resource over multiple streams. They manipulate window size and stream priority to force the server to queue the data in 1-byte chunks. Depending on how efficiently this data is queued, this can consume excess CPU, memory, or both."
+}{
+    "id": "CVE-2019-9514",
+    "cwe": "CWE-770",
+    "summary": "Some HTTP/2 implementations are vulnerable to a reset flood, potentially leading to a denial of service. The attacker opens a number of streams and sends an invalid request over each stream that should solicit a stream of RST_STREAM frames from the peer. Depending on how the peer queues the RST_STREAM frames, this can consume excess memory, CPU, or both."
+}{
     "id": "CVE-2019-9512",
     "cwe": "CWE-400",
     "summary": "Some HTTP/2 implementations are vulnerable to ping floods, potentially leading to a denial of service. The attacker sends continual pings to an HTTP/2 peer, causing the peer to build an internal queue of responses. Depending on how efficiently this data is queued, this can consume excess CPU, memory, or both."
+}{
+    "id": "CVE-2019-9518",
+    "cwe": "CWE-770",
+    "summary": "Some HTTP/2 implementations are vulnerable to a flood of empty frames, potentially leading to a denial of service. The attacker sends a stream of frames with an empty payload and without the end-of-stream flag. These frames can be DATA, HEADERS, CONTINUATION and/or PUSH_PROMISE. The peer spends time processing each frame disproportionate to attack bandwidth. This can consume excess CPU."
+}{
+    "id": "CVE-2019-9515",
+    "cwe": "CWE-770",
+    "summary": "Some HTTP/2 implementations are vulnerable to a settings flood, potentially leading to a denial of service. The attacker sends a stream of SETTINGS frames to the peer. Since the RFC requires that the peer reply with one acknowledgement per SETTINGS frame, an empty SETTINGS frame is almost equivalent in behavior to a ping. Depending on how efficiently this data is queued, this can consume excess CPU, memory, or both."
+}{
+    "id": "CVE-2019-9517",
+    "cwe": "CWE-770",
+    "summary": "Some HTTP/2 implementations are vulnerable to unconstrained interal data buffering, potentially leading to a denial of service. The attacker opens the HTTP/2 window so the peer can send without constraint; however, they leave the TCP window closed so the peer cannot actually write (many of) the bytes on the wire. The attacker then sends a stream of requests for a large response object. Depending on how the servers queue the responses, this can consume excess memory, CPU, or both."
+}{
+    "id": "CVE-2021-41145",
+    "cwe": "CWE-401",
+    "summary": "FreeSWITCH is a Software Defined Telecom Stack enabling the digital transformation from proprietary telecom switches to a software implementation that runs on any commodity hardware. FreeSWITCH prior to version 1.10.7 is susceptible to Denial of Service via SIP flooding. When flooding FreeSWITCH with SIP messages, it was observed that after a number of seconds the process was killed by the operating system due to memory exhaustion. By abusing this vulnerability, an attacker is able to crash any FreeSWITCH instance by flooding it with SIP messages, leading to Denial of Service. The attack does not require authentication and can be carried out over UDP, TCP or TLS. This issue was patched in version 1.10.7."
 }{
     "id": "CVE-2022-30322",
     "cwe": "NVD-CWE-noinfo",
@@ -87,13 +191,53 @@
     "cwe": "CWE-400",
     "summary": "A vulnerability has been identified in SIMATIC S7-1200 CPU family (incl. SIPLUS variants) (All versions < V4.1), SIMATIC S7-300 PN/DP CPU family (incl. related ET200 CPUs and SIPLUS variants) (All versions < V3.X.17), SIMATIC S7-400 PN/DP V6 and below CPU family (incl. SIPLUS variants) (All versions), SIMATIC S7-400 PN/DP V7 CPU family (incl. SIPLUS variants) (All versions), SIMATIC WinAC RTX (F) 2010 (All versions). Affected devices contain a vulnerability that could cause a Denial-of-Service condition of the web server by sending specially crafted HTTP requests to ports 80/tcp and 443/tcp. The security vulnerability could be exploited by an attacker with network access to an affected device. Successful exploitation requires no system privileges and no user interaction. An attacker could use the vulnerability to compromise the availability of the device\u2019s web server. Beyond the web service, no other functions or interfaces are affected by the Denial-of-Service condition."
 }{
+    "id": "CVE-2022-35272",
+    "cwe": "CWE-404",
+    "summary": "In BIG-IP Versions 17.0.x before 17.0.0.1 and 16.1.x before 16.1.3.1, when source-port preserve-strict is configured on an HTTP Message Routing Framework (MRF) virtual server, undisclosed traffic may cause the Traffic Management Microkernel (TMM) to produce a core file and the connection to terminate. Note: Software versions which have reached End of Technical Support (EoTS) are not evaluated."
+}{
+    "id": "CVE-2022-35240",
+    "cwe": "CWE-404",
+    "summary": "In BIG-IP Versions 16.1.x before 16.1.2.2, 15.1.x before 15.1.6.1, and 14.1.x before 14.1.5, when the Message Routing (MR) Message Queuing Telemetry Transport (MQTT) profile is configured on a virtual server, undisclosed requests can cause an increase in memory resource utilization. Note: Software versions which have reached End of Technical Support (EoTS) are not evaluated."
+}{
     "id": "CVE-2022-35236",
     "cwe": "CWE-400",
     "summary": "In BIG-IP Versions 16.1.x before 16.1.2.2, 15.1.x before 15.1.6.1, and 14.1.x before 14.1.5, when an HTTP2 profile is configured on a virtual server, undisclosed traffic can cause an increase in memory resource utilization. Note: Software versions which have reached End of Technical Support (EoTS) are not evaluated."
 }{
+    "id": "CVE-2021-0202",
+    "cwe": "CWE-401",
+    "summary": "On Juniper Networks MX Series and EX9200 Series platforms with Trio-based MPC (Modular Port Concentrator) where Integrated Routing and Bridging (IRB) interface is configured and it is mapped to a VPLS instance or a Bridge-Domain, certain network events at Customer Edge (CE) device may cause memory leak in the MPC which can cause an out of memory and MPC restarts. When this issue occurs, there will be temporary traffic interruption until the MPC is restored. An administrator can use the following CLI command to monitor the status of memory usage level of the MPC: user@device> show system resource-monitor fpc FPC Resource Usage Summary Free Heap Mem Watermark : 20 % Free NH Mem Watermark : 20 % Free Filter Mem Watermark : 20 % * - Watermark reached Slot # % Heap Free RTT Average RTT 1 87 PFE # % ENCAP mem Free % NH mem Free % FW mem Free 0 NA 88 99 1 NA 89 99 When the issue is occurring, the value of \u201c% NH mem Free\u201d will go down until the MPC restarts. This issue affects MX Series and EX9200 Series with Trio-based PFEs (Packet Forwarding Engines). Please refer to https://kb.juniper.net/KB25385 for the list of Trio-based PFEs. This issue affects Juniper Networks Junos OS on MX Series, EX9200 Series: 17.3R3-S8; 17.4R3-S2; 18.2R3-S4, 18.2R3-S5; 18.3R3-S2, 18.3R3-S3; 18.4 versions starting from 18.4R3-S1 and later versions prior to 18.4R3-S6; 19.2 versions starting from 19.2R2 and later versions prior to 19.2R3-S1; 19.4 versions starting from 19.4R2 and later versions prior to 19.4R2-S3, 19.4R3; 20.2 versions starting from 20.2R1 and later versions prior to 20.2R1-S3, 20.2R2. This issue does not affect Juniper Networks Junos OS: 18.1, 19.1, 19.3, 20.1."
+}{
+    "id": "CVE-2021-0215",
+    "cwe": "CWE-401",
+    "summary": "On Juniper Networks Junos EX series, QFX Series, MX Series and SRX branch series devices, a memory leak occurs every time the 802.1X authenticator port interface flaps which can lead to other processes, such as the pfex process, responsible for packet forwarding, to crash and restart. An administrator can use the following CLI command to monitor the status of memory consumption: user@device> show task memory detail Please refer to https://kb.juniper.net/KB31522 for details. This issue affects Juniper Networks Junos OS: 14.1X53 versions prior to 14.1X53-D54; 15.1X49 versions prior to 15.1X49-D240 ; 15.1X53 versions prior to 15.1X53-D593; 16.1 versions prior to 16.1R7-S8; 17.2 versions prior to 17.2R3-S4; 17.3 versions prior to 17.3R3-S8; 17.4 versions prior to 17.4R2-S11, 17.4R3-S2; 18.1 versions prior to 18.1R3-S10 ; 18.2 versions prior to 18.2R2-S7, 18.2R3-S3; 18.3 versions prior to 18.3R2-S4, 18.3R3-S2; 18.4 versions prior to 18.4R1-S7, 18.4R2-S4, 18.4R3-S2; 19.1 versions prior to 19.1R1-S5, 19.1R2-S2, 19.1R3; 19.2 versions prior to 19.2R1-S5, 19.2R2; 19.3 versions prior to 19.3R2-S3, 19.3R3; 19.4 versions prior to 19.4R1-S2, 19.4R2. This issue does not affect Juniper Networks Junos OS 12.3, 15.1."
+}{
+    "id": "CVE-2021-1309",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities exist in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Small Business RV Series Routers. An unauthenticated, adjacent attacker could execute arbitrary code or cause an affected router to leak system memory or reload. A memory leak or device reload would cause a denial of service (DoS) condition on an affected device. For more information about these vulnerabilities, see the Details section of this advisory. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2021-1308",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities exist in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Small Business RV Series Routers. An unauthenticated, adjacent attacker could execute arbitrary code or cause an affected router to leak system memory or reload. A memory leak or device reload would cause a denial of service (DoS) condition on an affected device. For more information about these vulnerabilities, see the Details section of this advisory. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2021-1251",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities exist in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Small Business RV Series Routers. An unauthenticated, adjacent attacker could execute arbitrary code or cause an affected router to leak system memory or reload. A memory leak or device reload would cause a denial of service (DoS) condition on an affected device. For more information about these vulnerabilities, see the Details section of this advisory. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
     "id": "CVE-2021-0242",
     "cwe": "CWE-770",
     "summary": "A vulnerability due to the improper handling of direct memory access (DMA) buffers on EX4300 switches on Juniper Networks Junos OS allows an attacker sending specific unicast frames to trigger a Denial of Service (DoS) condition by exhausting DMA buffers, causing the FPC to crash and the device to restart. The DMA buffer leak is seen when receiving these specific, valid unicast frames on an interface without Layer 2 Protocol Tunneling (L2PT) or dot1x configured. Interfaces with either L2PT or dot1x configured are not vulnerable to this issue. When this issue occurs, DMA buffer usage keeps increasing and the following error log messages may be observed: Apr 14 14:29:34.360 /kernel: pid 64476 (pfex_junos), uid 0: exited on signal 11 (core dumped) Apr 14 14:29:33.790 init: pfe-manager (PID 64476) terminated by signal number 11. Core dumped! The DMA buffers on the FPC can be monitored by the executing vty command 'show heap': ID Base Total(b) Free(b) Used(b) % Name -- ---------- ----------- ----------- ----------- --- ----------- 0 4a46000 268435456 238230496 30204960 11 Kernel 1 18a46000 67108864 17618536 49490328 73 Bcm_sdk 2 23737000 117440512 18414552 99025960 84 DMA buf <<<<< keeps increasing 3 2a737000 16777216 16777216 0 0 DMA desc This issue affects Juniper Networks Junos OS on the EX4300: 17.3 versions prior to 17.3R3-S11; 17.4 versions prior to 17.4R2-S13, 17.4R3-S4; 18.1 versions prior to 18.1R3-S12; 18.2 versions prior to 18.2R2-S8, 18.2R3-S7; 18.3 versions prior to 18.3R3-S4; 18.4 versions prior to 18.4R1-S8, 18.4R2-S7, 18.4R3-S7; 19.1 versions prior to 19.1R1-S6, 19.1R2-S2, 19.1R3-S4; 19.2 versions prior to 19.2R1-S6, 19.2R3-S2; 19.3 versions prior to 19.3R3-S2; 19.4 versions prior to 19.4R2-S3, 19.4R3-S1; 20.1 versions prior to 20.1R2; 20.2 versions prior to 20.2R2-S1, 20.2R3; 20.3 versions prior to 20.3R1-S1, 20.3R2."
+}{
+    "id": "CVE-2021-1563",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities in the implementation of the Cisco Discovery Protocol and Link Layer Discovery Protocol (LLDP) for Cisco Video Surveillance 7000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. These vulnerabilities are due to incorrect processing of certain Cisco Discovery Protocol and LLDP packets at ingress time. An attacker could exploit these vulnerabilities by sending crafted Cisco Discovery Protocol or LLDP packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DoS condition. Note: Cisco Discovery Protocol and LLDP are Layer 2 protocols. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2021-1564",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities in the implementation of the Cisco Discovery Protocol and Link Layer Discovery Protocol (LLDP) for Cisco Video Surveillance 7000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. These vulnerabilities are due to incorrect processing of certain Cisco Discovery Protocol and LLDP packets at ingress time. An attacker could exploit these vulnerabilities by sending crafted Cisco Discovery Protocol or LLDP packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DoS condition. Note: Cisco Discovery Protocol and LLDP are Layer 2 protocols. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2019-9516",
+    "cwe": "CWE-770",
+    "summary": "Some HTTP/2 implementations are vulnerable to a header leak, potentially leading to a denial of service. The attacker sends a stream of headers with a 0-length header name and 0-length header value, optionally Huffman encoded into 1-byte or greater headers. Some implementations allocate memory for these headers and keep the allocation alive until the session dies. This can consume excess memory."
 }{
     "id": "CVE-2021-44716",
     "cwe": "CWE-400",
@@ -103,9 +247,17 @@
     "cwe": "CWE-770",
     "summary": "Sydent is a reference Matrix identity server. Sydent does not limit the size of requests it receives from HTTP clients. A malicious user could send an HTTP request with a very large body, leading to memory exhaustion and denial of service. Sydent also does not limit response size for requests it makes to remote Matrix homeservers. A malicious homeserver could return a very large response, again leading to memory exhaustion and denial of service. This affects any server which accepts registration requests from untrusted clients. This issue has been patched by releases 89071a1, 0523511, f56eee3. As a workaround request sizes can be limited in an HTTP reverse-proxy. There are no known workarounds for the problem with overlarge responses."
 }{
+    "id": "CVE-2022-22212",
+    "cwe": "CWE-770",
+    "summary": "An Allocation of Resources Without Limits or Throttling vulnerability in the Packet Forwarding Engine (PFE) of Juniper Networks Junos OS Evolved allows unauthenticated network based attacker to cause a Denial of Service (DoS). On all Junos Evolved platforms hostbound protocols will be impacted by a high rate of specific hostbound traffic from ports on a PFE. Continued receipt of this amount of traffic will create a sustained Denial of Service (DoS) condition. This issue affects Juniper Networks Junos OS Evolved: 21.2 versions prior to 21.2R3-EVO; 21.3 versions prior to 21.3R2-EVO. This issue does not affect Juniper Networks Junos OS Evolved versions prior to 21.2R1."
+}{
     "id": "CVE-2021-3629",
     "cwe": "CWE-400",
     "summary": "A flaw was found in Undertow. A potential security issue in flow control handling by the browser over http/2 may potentially cause overhead or a denial of service in the server. The highest threat from this vulnerability is availability. This flaw affects Undertow versions prior to 2.0.40.Final and prior to 2.2.11.Final."
+}{
+    "id": "CVE-2022-22204",
+    "cwe": "CWE-401",
+    "summary": "An Improper Release of Memory Before Removing Last Reference vulnerability in the Session Initiation Protocol (SIP) Application Layer Gateway (ALG) of Juniper Networks Junos OS allows unauthenticated network-based attacker to cause a partial Denial of Service (DoS). On all MX and SRX platforms, if the SIP ALG is enabled, receipt of a specific SIP packet will create a stale SIP entry. Sustained receipt of such packets will cause the SIP call table to eventually fill up and cause a DoS for all SIP traffic. The SIP call usage can be monitored by \"show security alg sip calls\". To be affected the SIP ALG needs to be enabled, either implicitly / by default or by way of configuration. Please verify on SRX with: user@host> show security alg status | match sip SIP : Enabled Please verify on MX whether the following is configured: [ services ... rule <rule-name> (term <term-name>) from/match application/application-set <name> ] where either a. name = junos-sip or an application or application-set refers to SIP: b. [ applications application <name> application-protocol sip ] or c. [ applications application-set <name> application junos-sip ] This issue affects Juniper Networks Junos OS on SRX Series and MX Series: 20.4 versions prior to 20.4R3-S2; 21.1 versions prior to 21.1R3-S2; 21.2 versions prior to 21.2R2-S2; 21.2 versions prior to 21.2R3; 21.3 versions prior to 21.3R2; 21.4 versions prior to 21.4R2. This issue does not affect Juniper Networks Junos OS versions prior to 20.4R1. Juniper SIRT is not aware of any malicious exploitation of this vulnerability."
 }{
     "id": "CVE-2022-24839",
     "cwe": "CWE-400",
@@ -134,6 +286,18 @@
     "id": "CVE-2022-31073",
     "cwe": "CWE-400",
     "summary": "KubeEdge is an open source system for extending native containerized application orchestration capabilities to hosts at Edge. Prior to versions 1.11.1, 1.10.2, and 1.9.4, the ServiceBus server on the edge side may be susceptible to a DoS attack if an HTTP request containing a very large Body is sent to it. It is possible for the node to be exhausted of memory. The consequence of the exhaustion is that other services on the node, e.g. other containers, will be unable to allocate memory and thus causing a denial of service. Malicious apps accidentally pulled by users on the host and have the access to send HTTP requests to localhost may make an attack. It will be affected only when users enable the `ServiceBus` module in the config file `edgecore.yaml`. This bug has been fixed in Kubeedge 1.11.1, 1.10.2, and 1.9.4. As a workaround, disable the `ServiceBus` module in the config file `edgecore.yaml`."
+}{
+    "id": "CVE-2021-1387",
+    "cwe": "CWE-401",
+    "summary": "A vulnerability in the network stack of Cisco NX-OS Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. This vulnerability exists because the software improperly releases resources when it processes certain IPv6 packets that are destined to an affected device. An attacker could exploit this vulnerability by sending multiple crafted IPv6 packets to an affected device. A successful exploit could cause the network stack to run out of available buffers, impairing operations of control plane and management plane protocols and resulting in a DoS condition. Manual intervention would be required to restore normal operations on the affected device. For more information about the impact of this vulnerability, see the Details section of this advisory."
+}{
+    "id": "CVE-2021-31645",
+    "cwe": "CWE-770",
+    "summary": "An issue was discovered in glFTPd 2.11a that allows remote attackers to cause a denial of service via exceeding the connection limit."
+}{
+    "id": "CVE-2022-31110",
+    "cwe": "CWE-400",
+    "summary": "RSSHub is an open source, extensible RSS feed generator. In commits prior to 5c4177441417 passing some special values to the `filter` and `filterout` parameters can cause an abnormally high CPU. This results in an impact on the performance of the servers and RSSHub services which may lead to a denial of service. This issue has been fixed in commit 5c4177441417 and all users are advised to upgrade. There are no known workarounds for this issue."
 }{
     "id": "CVE-2014-3648",
     "cwe": "CWE-400",
@@ -187,6 +351,14 @@
     "cwe": "CWE-400",
     "summary": "Node.js < 14.11.0 is vulnerable to HTTP denial of service (DoS) attacks based on delayed requests submission which can make the server unable to accept new connections."
 }{
+    "id": "CVE-2022-29932",
+    "cwe": "CWE-401",
+    "summary": "The HTTP Server in PRIMEUR SPAZIO 2.5.1.954 (File Transfer) allows an unauthenticated attacker to obtain sensitive data (related to the content of transferred files) via a crafted HTTP request."
+}{
+    "id": "CVE-2020-8659",
+    "cwe": "CWE-770",
+    "summary": "CNCF Envoy through 1.13.0 may consume excessive amounts of memory when proxying HTTP/1.1 requests or responses with many small (i.e. 1 byte) chunks."
+}{
     "id": "CVE-2021-28089",
     "cwe": "CWE-400",
     "summary": "Tor before 0.4.5.7 allows a remote participant in the Tor directory protocol to exhaust CPU resources on a target, aka TROVE-2021-001."
@@ -203,9 +375,21 @@
     "cwe": "CWE-400",
     "summary": "This affects the package codemirror before 5.58.2; the package org.apache.marmotta.webjars:codemirror before 5.58.2. The vulnerable regular expression is located in https://github.com/codemirror/CodeMirror/blob/cdb228ac736369c685865b122b736cd0d397836c/mode/javascript/javascript.jsL129. The ReDOS vulnerability of the regex is mainly due to the sub-pattern (s|/*.*?*/)*"
 }{
+    "id": "CVE-2020-25648",
+    "cwe": "CWE-770",
+    "summary": "A flaw was found in the way NSS handled CCS (ChangeCipherSpec) messages in TLS 1.3. This flaw allows a remote attacker to send multiple CCS messages, causing a denial of service for servers compiled with the NSS library. The highest threat from this vulnerability is to system availability. This flaw affects NSS versions before 3.58."
+}{
+    "id": "CVE-2022-22278",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in SonicOS CFS (Content filtering service) returns a large 403 forbidden HTTP response message to the source address when users try to access prohibited resource this allows an attacker to cause HTTP Denial of Service (DoS) attack"
+}{
     "id": "CVE-2022-20795",
     "cwe": "CWE-345",
     "summary": "A vulnerability in the implementation of the Datagram TLS (DTLS) protocol in Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause high CPU utilization, resulting in a denial of service (DoS) condition. This vulnerability is due to suboptimal processing that occurs when establishing a DTLS tunnel as part of an AnyConnect SSL VPN connection. An attacker could exploit this vulnerability by sending a steady stream of crafted DTLS traffic to an affected device. A successful exploit could allow the attacker to exhaust resources on the affected VPN headend device. This could cause existing DTLS tunnels to stop passing traffic and prevent new DTLS tunnels from establishing, resulting in a DoS condition. Note: When the attack traffic stops, the device recovers gracefully."
+}{
+    "id": "CVE-2019-19343",
+    "cwe": "CWE-404",
+    "summary": "A flaw was found in Undertow when using Remoting as shipped in Red Hat Jboss EAP before version 7.2.4. A memory leak in HttpOpenListener due to holding remote connections indefinitely may lead to denial of service. Versions before undertow 2.0.25.SP1 and jboss-remoting 5.0.14.SP1 are believed to be vulnerable."
 }{
     "id": "CVE-2020-25219",
     "cwe": "CWE-674",
@@ -215,9 +399,17 @@
     "cwe": "CWE-755",
     "summary": "http-swagger is an open source wrapper to automatically generate RESTful API documentation with Swagger 2.0. In versions of http-swagger prior to 1.2.6 an attacker may perform a denial of service attack consisting of memory exhaustion on the host system. The cause of the memory exhaustion is down to improper handling of http methods. Users are advised to upgrade. Users unable to upgrade may to restrict the path prefix to the \"GET\" method as a workaround."
 }{
+    "id": "CVE-2022-20692",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability in the NETCONF over SSH feature of Cisco IOS XE Software could allow a low-privileged, authenticated, remote attacker to cause a denial of service condition (DoS) on an affected device. This vulnerability is due to insufficient resource management. An attacker could exploit this vulnerability by initiating a large number of NETCONF over SSH connections. A successful exploit could allow the attacker to exhaust resources, causing the device to reload and resulting in a DoS condition on an affected device."
+}{
     "id": "CVE-2020-10995",
     "cwe": "CWE-400",
     "summary": "PowerDNS Recursor from 4.1.0 up to and including 4.3.0 does not sufficiently defend against amplification attacks. An issue in the DNS protocol has been found that allow malicious parties to use recursive DNS services to attack third party authoritative name servers. The attack uses a crafted reply by an authoritative name server to amplify the resulting traffic between the recursive and other authoritative name servers. Both types of service can suffer degraded performance as an effect. This is triggered by random subdomains in the NSDNAME in NS records. PowerDNS Recursor 4.1.16, 4.2.2 and 4.3.1 contain a mitigation to limit the impact of this DNS protocol issue."
+}{
+    "id": "CVE-2020-35679",
+    "cwe": "CWE-401",
+    "summary": "smtpd/table.c in OpenSMTPD before 6.8.0p1 lacks a certain regfree, which might allow attackers to trigger a \"very significant\" memory leak via messages to an instance that performs many regex lookups."
 }{
     "id": "CVE-2021-0285",
     "cwe": "CWE-400",
@@ -227,9 +419,25 @@
     "cwe": "CWE-835",
     "summary": "TensorFlow is an end-to-end open source platform for machine learning. TFlite graphs must not have loops between nodes. However, this condition was not checked and an attacker could craft models that would result in infinite loop during evaluation. In certain cases, the infinite loop would be replaced by stack overflow due to too many recursive calls. For example, the `While` implementation(https://github.com/tensorflow/tensorflow/blob/106d8f4fb89335a2c52d7c895b7a7485465ca8d9/tensorflow/lite/kernels/while.cc) could be tricked into a scneario where both the body and the loop subgraphs are the same. Evaluating one of the subgraphs means calling the `Eval` function for the other and this quickly exhaust all stack space. The fix will be included in TensorFlow 2.5.0. We will also cherrypick this commit on TensorFlow 2.4.2, TensorFlow 2.3.3, TensorFlow 2.2.3 and TensorFlow 2.1.4, as these are also affected and still in supported range. Please consult our security guide(https://github.com/tensorflow/tensorflow/blob/master/SECURITY.md) for more information regarding the security model and how to contact us with issues and questions."
 }{
+    "id": "CVE-2021-41229",
+    "cwe": "CWE-401",
+    "summary": "BlueZ is a Bluetooth protocol stack for Linux. In affected versions a vulnerability exists in sdp_cstate_alloc_buf which allocates memory which will always be hung in the singly linked list of cstates and will not be freed. This will cause a memory leak over time. The data can be a very large object, which can be caused by an attacker continuously sending sdp packets and this may cause the service of the target device to crash."
+}{
+    "id": "CVE-2021-40405",
+    "cwe": "CWE-404",
+    "summary": "A denial of service vulnerability exists in the cgiserver.cgi Upgrade API functionality of Reolink RLC-410W v3.0.0.136_20121102. A specially-crafted HTTP request can lead to a reboot. An attacker can send an HTTP request to trigger this vulnerability."
+}{
+    "id": "CVE-2022-23159",
+    "cwe": "CWE-401",
+    "summary": "Dell PowerScale OneFS, 8.2.2 - 9.3.0.x, contain a missing release of memory after effective lifetime vulnerability. An authenticated user with ISI_PRIV_LOGIN_SSH and/or ISI_PRIV_LOGIN_CONSOLE and ISI_PRIV_AUTH_PROVIDERS privileges could exploit this vulnerability, leading to a Denial-Of-Service. This can also impact a cluster in Compliance mode. Dell recommends to update at the earliest opportunity."
+}{
     "id": "CVE-2021-22883",
     "cwe": "CWE-400",
     "summary": "Node.js before 10.24.0, 12.21.0, 14.16.0, and 15.10.0 is vulnerable to a denial of service attack when too many connection attempts with an 'unknownProtocol' are established. This leads to a leak of file descriptors. If a file descriptor limit is configured on the system, then the server is unable to accept new connections and prevent the process also from opening, e.g. a file. If no file descriptor limit is configured, then this lead to an excessive memory usage and cause the system to run out of memory."
+}{
+    "id": "CVE-2017-20011",
+    "cwe": "CWE-404",
+    "summary": "** UNSUPPORTED WHEN ASSIGNED ** A vulnerability was found in WEKA INTEREST Security Scanner 1.8. It has been rated as problematic. This issue affects some unknown processing of the component HTTP Handler. The manipulation with an unknown input leads to denial of service. It is possible to launch the attack on the local host. The exploit has been disclosed to the public and may be used. NOTE: This vulnerability only affects products that are no longer supported by the maintainer."
 }{
     "id": "CVE-2021-3909",
     "cwe": "CWE-400",
@@ -239,9 +447,21 @@
     "cwe": "CWE-400",
     "summary": "Istio is an open platform to connect, manage, and secure microservices. In affected versions the Istio control plane, istiod, is vulnerable to a request processing error, allowing a malicious attacker that sends a specially crafted message which results in the control plane crashing when the validating webhook for a cluster is exposed publicly. This endpoint is served over TLS port 15017, but does not require any authentication from the attacker. For simple installations, Istiod is typically only reachable from within the cluster, limiting the blast radius. However, for some deployments, especially [external istiod](https://istio.io/latest/docs/setup/install/external-controlplane/) topologies, this port is exposed over the public internet. This issue has been patched in versions 1.13.2, 1.12.5 and 1.11.8. Users are advised to upgrade. Users unable to upgrade should disable access to a validating webhook that is exposed to the public internet or restrict the set of IP addresses that can query it to a set of known, trusted entities."
 }{
+    "id": "CVE-2020-13934",
+    "cwe": "CWE-401",
+    "summary": "An h2c direct connection to Apache Tomcat 10.0.0-M1 to 10.0.0-M6, 9.0.0.M5 to 9.0.36 and 8.5.1 to 8.5.56 did not release the HTTP/1.1 processor after the upgrade to HTTP/2. If a sufficient number of such requests were made, an OutOfMemoryException could occur leading to a denial of service."
+}{
+    "id": "CVE-2021-46082",
+    "cwe": "CWE-401",
+    "summary": "Moxa TN-5900 v3.1 series routers, MGate 5109 v2.2 series protocol gateways, and MGate 5101-PBM-MN v2.1 series protocol gateways were discovered to contain a memory leak which allows attackers to cause a Denial of Service (DoS) via crafted packets."
+}{
     "id": "CVE-2022-22724",
     "cwe": "CWE-400",
     "summary": "A CWE-400: Uncontrolled Resource Consumption vulnerability exists that could cause a denial of service on ports 80 (HTTP) and 502 (Modbus), when sending a large number of TCP RST or FIN packets to any open TCP port of the PLC. Affected Product: Modicon M340 CPUs: BMXP34 (All Versions)"
+}{
+    "id": "CVE-2021-22050",
+    "cwe": "CWE-770",
+    "summary": "ESXi contains a slow HTTP POST denial-of-service vulnerability in rhttpproxy. A malicious actor with network access to ESXi may exploit this issue to create a denial-of-service condition by overwhelming rhttpproxy service with multiple requests."
 }{
     "id": "CVE-2022-22899",
     "cwe": "CWE-400",
@@ -259,9 +479,29 @@
     "cwe": "CWE-400",
     "summary": "nginx before versions 1.15.6 and 1.14.1 has a vulnerability in the implementation of HTTP/2 that can allow for excessive CPU usage. This issue affects nginx compiled with the ngx_http_v2_module (not compiled by default) if the 'http2' option of the 'listen' directive is used in a configuration file."
 }{
+    "id": "CVE-2020-7218",
+    "cwe": "CWE-770",
+    "summary": "HashiCorp Nomad and Nonad Enterprise up to 0.10.2 HTTP/RPC services allowed unbounded resource usage, and were susceptible to unauthenticated denial of service. Fixed in 0.10.3."
+}{
+    "id": "CVE-2021-22050",
+    "cwe": "CWE-770",
+    "summary": "ESXi contains a slow HTTP POST denial-of-service vulnerability in rhttpproxy. A malicious actor with network access to ESXi may exploit this issue to create a denial-of-service condition by overwhelming rhttpproxy service with multiple requests."
+}{
+    "id": "CVE-2019-10942",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability has been identified in SCALANCE X-200 switch family (incl. SIPLUS NET variants) (All versions < V5.2.5), SCALANCE X-200IRT switch family (incl. SIPLUS NET variants) (All versions < V5.5.0), SCALANCE X204RNA (HSR) (All versions), SCALANCE X204RNA (PRP) (All versions), SCALANCE X204RNA EEC (HSR) (All versions), SCALANCE X204RNA EEC (PRP) (All versions), SCALANCE X204RNA EEC (PRP/HSR) (All versions). The device contains a vulnerability that could allow an attacker to trigger a denial-of-service condition by sending large message packages repeatedly to the telnet service. The security vulnerability could be exploited by an attacker with network access to the affected systems. Successful exploitation requires no system privileges and no user interaction. An attacker could use the vulnerability to compromise availability of the device."
+}{
+    "id": "CVE-2009-1378",
+    "cwe": "CWE-401",
+    "summary": "Multiple memory leaks in the dtls1_process_out_of_seq_message function in ssl/d1_both.c in OpenSSL 0.9.8k and earlier 0.9.8 versions allow remote attackers to cause a denial of service (memory consumption) via DTLS records that (1) are duplicates or (2) have sequence numbers much greater than current sequence numbers, aka \"DTLS fragment handling memory leak.\""
+}{
     "id": "CVE-2022-22172",
     "cwe": "CWE-401",
     "summary": "A Missing Release of Memory after Effective Lifetime vulnerability in the Layer-2 control protocols daemon (l2cpd) of Juniper Networks Junos OS and Junos OS Evolved allows an unauthenticated adjacent attacker to cause a memory leak. Continued exploitation can lead to memory exhaustion and thereby a Denial of Service (DoS). This issue occurs when specific LLDP packets are received. The impact of the l2cpd cores is that if any of the stp protocols (rstp, mstp or vstp) is used then stp re-converges and traffic loss will occur during that time. Also if any services depend on LLDP state (like PoE or VoIP device recognition) then these will also be affected. The memory utilization of the L2CPd process can be monitored with the following command: user@host> show system processes extensive | match l2cpd 1234 root 52 0 521M 43412K RUN 1 4:02 34.47% l2cpd This issue affects: Juniper Networks Junos OS 18.4 version 18.4R2-S4 and later versions prior to 18.4R2-S10. 19.2 versions prior to 19.2R1-S8, 19.2R3-S4; 19.3 versions prior to 19.3R3-S5; 19.4 versions prior to 19.4R3-S7; 20.1 versions prior to 20.1R3-S3; 20.2 versions prior to 20.2R3-S2; 20.3 versions prior to 20.3R3-S1; 20.4 versions prior to 20.4R3; 21.1 versions prior to 21.1R2-S2, 21.1R3; 21.2 versions prior to 21.2R2; Juniper Networks Junos OS Evolved All versions prior to 20.4R3-S2-EVO; 21.1 version 21.1R1-EVO and later versions; 21.2 versions prior to 21.2R2-EVO. This issue does not affect: Juniper Networks Junos OS 19.1 version 19.1R1 and later versions."
+}{
+    "id": "CVE-2022-23010",
+    "cwe": "CWE-404",
+    "summary": "On BIG-IP versions 16.x before 16.1.0, 15.1.x before 15.1.4.1, 14.1.x before 14.1.4.4, and all versions of 13.1.x, 12.1.x, and 11.6.x, when a FastL4 profile and an HTTP profile are configured on a virtual server, undisclosed requests can cause an increase in memory resource utilization. Note: Software versions which have reached End of Technical Support (EoTS) are not evaluated."
 }{
     "id": "CVE-2022-22159",
     "cwe": "CWE-400",
@@ -274,6 +514,14 @@
     "id": "CVE-2022-22172",
     "cwe": "CWE-401",
     "summary": "A Missing Release of Memory after Effective Lifetime vulnerability in the Layer-2 control protocols daemon (l2cpd) of Juniper Networks Junos OS and Junos OS Evolved allows an unauthenticated adjacent attacker to cause a memory leak. Continued exploitation can lead to memory exhaustion and thereby a Denial of Service (DoS). This issue occurs when specific LLDP packets are received. The impact of the l2cpd cores is that if any of the stp protocols (rstp, mstp or vstp) is used then stp re-converges and traffic loss will occur during that time. Also if any services depend on LLDP state (like PoE or VoIP device recognition) then these will also be affected. The memory utilization of the L2CPd process can be monitored with the following command: user@host> show system processes extensive | match l2cpd 1234 root 52 0 521M 43412K RUN 1 4:02 34.47% l2cpd This issue affects: Juniper Networks Junos OS 18.4 version 18.4R2-S4 and later versions prior to 18.4R2-S10. 19.2 versions prior to 19.2R1-S8, 19.2R3-S4; 19.3 versions prior to 19.3R3-S5; 19.4 versions prior to 19.4R3-S7; 20.1 versions prior to 20.1R3-S3; 20.2 versions prior to 20.2R3-S2; 20.3 versions prior to 20.3R3-S1; 20.4 versions prior to 20.4R3; 21.1 versions prior to 21.1R2-S2, 21.1R3; 21.2 versions prior to 21.2R2; Juniper Networks Junos OS Evolved All versions prior to 20.4R3-S2-EVO; 21.1 version 21.1R1-EVO and later versions; 21.2 versions prior to 21.2R2-EVO. This issue does not affect: Juniper Networks Junos OS 19.1 version 19.1R1 and later versions."
+}{
+    "id": "CVE-2021-23218",
+    "cwe": "CWE-401",
+    "summary": "When running with FIPS mode enabled, Mirantis Container Runtime 20.10.8 leaks memory during TLS Handshakes which could be abused to cause a denial of service."
+}{
+    "id": "CVE-2019-10079",
+    "cwe": "CWE-770",
+    "summary": "Apache Traffic Server is vulnerable to HTTP/2 setting flood attacks. Earlier versions of Apache Traffic Server didn't limit the number of setting frames sent from the client using the HTTP/2 protocol. Users should upgrade to Apache Traffic Server 7.1.7, 8.0.4, or later versions."
 }{
     "id": "CVE-2021-41014",
     "cwe": "CWE-400",
@@ -295,13 +543,37 @@
     "cwe": "CWE-400",
     "summary": "Multiple uncontrolled resource consumption vulnerabilities in the web interface of FortiPortal before 6.0.6 may allow a single low-privileged user to induce a denial of service via multiple HTTP requests."
 }{
+    "id": "CVE-2019-1708",
+    "cwe": "CWE-401",
+    "summary": "A vulnerability in the Internet Key Exchange Version 2 Mobility and Multihoming Protocol (MOBIKE) feature for the Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause a memory leak or a reload of an affected device that leads to a denial of service (DoS) condition. The vulnerability is due to the incorrect processing of certain MOBIKE packets. An attacker could exploit this vulnerability by sending crafted MOBIKE packets to an affected device to be processed. A successful exploit could cause an affected device to continuously consume memory and eventually reload, resulting in a DoS condition. The MOBIKE feature is supported only for IPv4 addresses."
+}{
+    "id": "CVE-2021-34781",
+    "cwe": "CWE-755",
+    "summary": "A vulnerability in the processing of SSH connections for multi-instance deployments of Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on the affected device. This vulnerability is due to a lack of proper error handling when an SSH session fails to be established. An attacker could exploit this vulnerability by sending a high rate of crafted SSH connections to the instance. A successful exploit could allow the attacker to cause resource exhaustion, which causes a DoS condition on the affected device. The device must be manually reloaded to recover."
+}{
+    "id": "CVE-2021-40117",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability in SSL/TLS message handler for Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. This vulnerability exists because incoming SSL/TLS packets are not properly processed. An attacker could exploit this vulnerability by sending a crafted SSL/TLS packet to an affected device. A successful exploit could allow the attacker to cause the affected device to reload, resulting in a DoS condition."
+}{
     "id": "CVE-2021-22101",
     "cwe": "CWE-400",
     "summary": "Cloud Controller versions prior to 1.118.0 are vulnerable to unauthenticated denial of Service(DoS) vulnerability allowing unauthenticated attackers to cause denial of service by using REST HTTP requests with label_selectors on multiple V3 endpoints by generating an enormous SQL query."
 }{
+    "id": "CVE-2020-3505",
+    "cwe": "CWE-401",
+    "summary": "A vulnerability in the Cisco Discovery Protocol of Cisco Video Surveillance 8000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. The vulnerability is due to incorrect processing of certain Cisco Discovery Protocol packets. An attacker could exploit this vulnerability by sending certain Cisco Discovery Protocol packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DOS condition. Note: Cisco Discovery Protocol is a Layer 2 protocol. To exploit this vulnerability, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
     "id": "CVE-2021-0292",
     "cwe": "CWE-400",
     "summary": "An Uncontrolled Resource Consumption vulnerability in the ARP daemon (arpd) and Network Discovery Protocol (ndp) process of Juniper Networks Junos OS Evolved allows a malicious attacker on the local network to consume memory resources, ultimately resulting in a Denial of Service (DoS) condition. Link-layer functions such as IPv4 and/or IPv6 address resolution may be impacted, leading to traffic loss. The processes do not recover on their own and must be manually restarted. Changes in memory usage can be monitored using the following shell commands (header shown for clarity): user@router:/var/log# ps aux | grep arpd USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND root 31418 59.0 0.7 *5702564* 247952 ? xxx /usr/sbin/arpd --app-name arpd -I object_select --shared-objects-mode 3 user@router:/var/log# ps aux | grep arpd USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND root 31418 49.1 1.0 *5813156* 351184 ? xxx /usr/sbin/arpd --app-name arpd -I object_select --shared-objects-mode 3 Memory usage can be monitored for the ndp process in a similar fashion: user@router:/var/log# ps aux | grep ndp USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND root 14935 0.0 0.1 *5614052* 27256 ? Ssl Jun15 0:17 /usr/sbin/ndp -I no_tab_chk,object_select --app-name ndp --shared-obje user@router:/var/log# ps aux | grep ndp USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND root 14935 0.0 0.1 *5725164* 27256 ? Ssl Jun15 0:17 /usr/sbin/ndp -I no_tab_chk,object_select --app-name ndp --shared-obje This issue affects Juniper Networks Junos OS Evolved: 19.4 versions prior to 19.4R2-S3-EVO; 20.1 versions prior to 20.1R2-S4-EVO; all versions of 20.2-EVO. This issue does not affect Juniper Networks Junos OS Evolved versions prior to 19.4R2-EVO."
+}{
+    "id": "CVE-2020-3543",
+    "cwe": "CWE-401",
+    "summary": "A vulnerability in the Cisco Discovery Protocol of Cisco Video Surveillance 8000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. The vulnerability is due to incorrect processing of certain Cisco Discovery Protocol packets. An attacker could exploit this vulnerability by sending certain Cisco Discovery Protocol packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DOS condition. Note: Cisco Discovery Protocol is a Layer 2 protocol. To exploit this vulnerability, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2020-3572",
+    "cwe": "CWE-401",
+    "summary": "A vulnerability in the SSL/TLS session handler of Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. The vulnerability is due to a memory leak when closing SSL/TLS connections in a specific state. An attacker could exploit this vulnerability by establishing several SSL/TLS sessions and ensuring they are closed under certain conditions. A successful exploit could allow the attacker to exhaust memory resources in the affected device, which would prevent it from processing new SSL/TLS connections, resulting in a DoS. Manual intervention is required to recover an affected device."
 }{
     "id": "CVE-2020-3479",
     "cwe": "CWE-400",
@@ -335,13 +607,57 @@
     "cwe": "CWE-400",
     "summary": "Python 2.7 through 2.7.17, 3.5 through 3.5.9, 3.6 through 3.6.10, 3.7 through 3.7.6, and 3.8 through 3.8.1 allows an HTTP server to conduct Regular Expression Denial of Service (ReDoS) attacks against a client because of urllib.request.AbstractBasicAuthHandler catastrophic backtracking."
 }{
+    "id": "CVE-2020-11637",
+    "cwe": "CWE-401",
+    "summary": "A memory leak in the TFTP service in B&R Automation Runtime versions <N4.26, <N4.34, <F4.45, <E4.53, <D4.63, <A4.73 and prior could allow an unauthenticated attacker with network access to cause a denial of service (DoS) condition."
+}{
+    "id": "CVE-2021-40523",
+    "cwe": "CWE-754",
+    "summary": "In Contiki 3.0, Telnet option negotiation is mishandled. During negotiation between a server and a client, the server may fail to give the WILL/WONT or DO/DONT response for DO and WILL commands because of improper handling of exception condition, which leads to property violations and denial of service. Specifically, a server sometimes sends no response, because a fixed buffer space is available for all responses and that space may have been exhausted."
+}{
+    "id": "CVE-2017-5544",
+    "cwe": "CWE-400",
+    "summary": "An issue was discovered on FiberHome Fengine S5800 switches V210R240. An unauthorized attacker can access the device's SSH service, using a password cracking tool to establish SSH connections quickly. This will trigger an increase in the SSH login timeout (each of the login attempts will occupy a connection slot for a longer time). Once this occurs, legitimate login attempts via SSH/telnet will be refused, resulting in a denial of service; you must restart the device."
+}{
+    "id": "CVE-2021-1592",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the way Cisco UCS Manager software handles SSH sessions could allow an authenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. This vulnerability is due to improper resource management for established SSH sessions. An attacker could exploit this vulnerability by opening a significant number of SSH sessions on an affected device. A successful exploit could allow the attacker to cause a crash and restart of internal Cisco UCS Manager software processes and a temporary loss of access to the Cisco UCS Manager CLI and web UI. Note: The attacker must have valid user credentials to authenticate to the affected device."
+}{
     "id": "CVE-2021-21375",
     "cwe": "CWE-400",
     "summary": "PJSIP is a free and open source multimedia communication library written in C language implementing standard based protocols such as SIP, SDP, RTP, STUN, TURN, and ICE. In PJSIP version 2.10 and earlier, after an initial INVITE has been sent, when two 183 responses are received, with the first one causing negotiation failure, a crash will occur. This results in a denial of service."
 }{
+    "id": "CVE-2021-34389",
+    "cwe": "CWE-401",
+    "summary": "Trusty contains a vulnerability in NVIDIA OTE protocol message parsing code, which is present in all the TAs. An incorrect bounds check can allow a local user through a malicious client to access memory from the heap in the TrustZone, which may lead to information disclosure."
+}{
+    "id": "CVE-2021-32068",
+    "cwe": "CWE-770",
+    "summary": "The AWV and MiCollab Client Service components in Mitel MiCollab before 9.3 could allow an attacker to perform a Man-In-the-Middle attack by sending multiple session renegotiation requests, due to insufficient TLS session controls. A successful exploit could allow an attacker to modify application data and state."
+}{
     "id": "CVE-2018-1000115",
     "cwe": "CWE-400",
     "summary": "Memcached version 1.5.5 contains an Insufficient Control of Network Message Volume (Network Amplification, CWE-406) vulnerability in the UDP support of the memcached server that can result in denial of service via network flood (traffic amplification of 1:50,000 has been reported by reliable sources). This attack appear to be exploitable via network connectivity to port 11211 UDP. This vulnerability appears to have been fixed in 1.5.6 due to the disabling of the UDP protocol by default."
+}{
+    "id": "CVE-2018-1000808",
+    "cwe": "CWE-404",
+    "summary": "Python Cryptographic Authority pyopenssl version Before 17.5.0 contains a CWE - 401 : Failure to Release Memory Before Removing Last Reference vulnerability in PKCS #12 Store that can result in Denial of service if memory runs low or is exhausted. This attack appear to be exploitable via Depends upon calling application, however it could be as simple as initiating a TLS connection. Anything that would cause the calling application to reload certificates from a PKCS #12 store.. This vulnerability appears to have been fixed in 17.5.0."
+}{
+    "id": "CVE-2021-34431",
+    "cwe": "CWE-401",
+    "summary": "In Eclipse Mosquitto version 1.6 to 2.0.10, if an authenticated client that had connected with MQTT v5 sent a crafted CONNECT message to the broker a memory leak would occur, which could be used to provide a DoS attack against the broker."
+}{
+    "id": "CVE-2021-25701",
+    "cwe": "CWE-401",
+    "summary": "The fUSBHub driver in the PCoIP Software Client prior to version 21.07.0 had an error in object management during the handling of a variety of IOCTLs, which allowed an attacker to cause a denial of service."
+}{
+    "id": "CVE-2021-20108",
+    "cwe": "CWE-401",
+    "summary": "Manage Engine Asset Explorer Agent 1.0.34 listens on port 9000 for incoming commands over HTTPS from Manage Engine Server. The HTTPS certificates are not verified which allows any arbitrary user on the network to send commands over port 9000. While these commands may not be executed (due to authtoken validation), the Asset Explorer agent will reach out to the manage engine server for an HTTP request. During this process, AEAgent.cpp allocates 0x66 bytes using \"malloc\". This memory is never free-ed in the program, causing a memory leak. Additionally, the instruction sent to aeagent (ie: NEWSCAN, DELTASCAN, etc) is converted to a unicode string, but is never freed. These memory leaks allow a remote attacker to exploit a Denial of Service scenario through repetitively sending these commands to an agent and eventually crashing it the agent due to an out-of-memory condition."
+}{
+    "id": "CVE-2021-0224",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the handling of internal resources necessary to bring up a large number of Layer 2 broadband remote access subscriber (BRAS) nodes in Juniper Networks Junos OS can cause the Access Node Control Protocol daemon (ANCPD) to crash and restart, leading to a Denial of Service (DoS) condition. Continued processing of spoofed subscriber nodes will create a sustained Denial of Service (DoS) condition. When the number of subscribers attempting to connect exceeds the configured maximum-discovery-table-entries value, the subscriber fails to map to an internal neighbor entry, causing the ANCPD process to crash. This issue affects Juniper Networks Junos OS: All versions prior to 17.3R3-S12; 17.4 versions prior to 17.4R2-S13; 18.1 versions prior to 18.1R3-S13; 18.2 versions prior to 18.2R3-S8; 18.3 versions prior to 18.3R3-S5; 18.4 versions prior to 18.4R1-S8, 18.4R3-S8; 19.1 versions prior to 19.1R3-S4; 19.2 versions prior to 19.2R3-S2; 19.3 versions prior to 19.3R3-S1; 19.4 versions prior to 19.4R3-S1; 20.1 versions prior to 20.1R2; 20.2 versions prior to 20.2R2; 20.3 versions prior to 20.3R2."
 }{
     "id": "CVE-2019-11048",
     "cwe": "CWE-190",
@@ -367,13 +683,37 @@
     "cwe": "CWE-400",
     "summary": "Envoy version 1.14.2, 1.13.2, 1.12.4 or earlier may consume excessive amounts of memory when processing HTTP/1.1 headers with long field names or requests with long URLs."
 }{
+    "id": "CVE-2020-10364",
+    "cwe": "CWE-400",
+    "summary": "The SSH daemon on MikroTik routers through v6.44.3 could allow remote attackers to generate CPU activity, trigger refusal of new authorized connections, and cause a reboot via connect and write system calls, because of uncontrolled resource management."
+}{
     "id": "CVE-2019-0012",
     "cwe": "CWE-400",
     "summary": "A Denial of Service (DoS) vulnerability in BGP in Juniper Networks Junos OS configured as a VPLS PE allows an attacker to craft a specific BGP message to cause the routing protocol daemon (rpd) process to crash and restart. While rpd restarts after a crash, repeated crashes can result in an extended DoS condition. This issue only affects PE routers configured with BGP Auto discovery for LDP VPLS. Other BGP configurations are unaffected by this vulnerability. Affected releases are Juniper Networks Junos OS: 12.1X46 versions prior to 12.1X46-D81; 12.3 versions prior to 12.3R12-S12; 12.3X48 versions prior to 12.3X48-D76; 14.1X53 versions prior to 14.1X53-D48; 15.1 versions prior to 15.1F6-S12, 15.1R7-S2; 15.1X49 versions prior to 15.1X49-D150; 15.1X53 versions prior to 15.1X53-D235, 15.1X53-D495, 15.1X53-D590, 15.1X53-D68; 16.1 versions prior to 16.1R3-S10, 16.1R4-S12, 16.1R6-S6, 16.1R7-S1; 16.2 versions prior to 16.2R2-S7; 17.1 versions prior to 17.1R2-S9, 17.1R3; 17.2 versions prior to 17.2R1-S7, 17.2R2-S6, 17.2R3; 17.3 versions prior to 17.3R2-S4, 17.3R3; 17.4 versions prior to 17.4R1-S5, 17.4R2; 18.1 versions prior to 18.1R2-S3, 18.1R3."
 }{
+    "id": "CVE-2021-1598",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Video Surveillance 7000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. These vulnerabilities are due to incorrect processing of certain LLDP packets at ingress time. An attacker could exploit these vulnerabilities by sending crafted LLDP packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DoS condition. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2021-1597",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Video Surveillance 7000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. These vulnerabilities are due to incorrect processing of certain LLDP packets at ingress time. An attacker could exploit these vulnerabilities by sending crafted LLDP packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DoS condition. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2021-1596",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Video Surveillance 7000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. These vulnerabilities are due to incorrect processing of certain LLDP packets at ingress time. An attacker could exploit these vulnerabilities by sending crafted LLDP packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DoS condition. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
+    "id": "CVE-2021-1595",
+    "cwe": "CWE-401",
+    "summary": "Multiple vulnerabilities in the Link Layer Discovery Protocol (LLDP) implementation for Cisco Video Surveillance 7000 Series IP Cameras could allow an unauthenticated, adjacent attacker to cause a memory leak, which could lead to a denial of service (DoS) condition on an affected device. These vulnerabilities are due to incorrect processing of certain LLDP packets at ingress time. An attacker could exploit these vulnerabilities by sending crafted LLDP packets to an affected device. A successful exploit could allow the attacker to cause the affected device to continuously consume memory, which could cause the device to crash and reload, resulting in a DoS condition. Note: LLDP is a Layer 2 protocol. To exploit these vulnerabilities, an attacker must be in the same broadcast domain as the affected device (Layer 2 adjacent)."
+}{
     "id": "CVE-2018-17189",
     "cwe": "CWE-400",
     "summary": "In Apache HTTP server versions 2.4.37 and prior, by sending request bodies in a slow loris way to plain resources, the h2 stream for that request unnecessarily occupied a server thread cleaning up that incoming data. This affects only HTTP/2 (mod_http2) connections."
+}{
+    "id": "CVE-2021-33541",
+    "cwe": "CWE-770",
+    "summary": "Phoenix Contact Classic Line Controllers ILC1x0 and ILC1x1 in all versions/variants are affected by a Denial-of-Service vulnerability. The communication protocols and device access do not feature authentication measures. Remote attackers can use specially crafted IP packets to cause a denial of service on the PLC's network communication module. A successful attack stops all network communication. To restore the network connectivity the device needs to be restarted. The automation task is not affected."
 }{
     "id": "CVE-2021-33818",
     "cwe": "CWE-400",
@@ -387,6 +727,10 @@
     "cwe": "CWE-400",
     "summary": "An issue was discovered on MOXA Mgate MB3180 Version 2.1 Build 18113012. Attackers can use slowhttptest tool to send incomplete HTTP request, which could make server keep waiting for the packet to finish the connection, until its resource exhausted. Then the web server is denial-of-service."
 }{
+    "id": "CVE-2021-33176",
+    "cwe": "CWE-770",
+    "summary": "VerneMQ MQTT Broker versions prior to 1.12.0 are vulnerable to a denial of service attack as a result of excessive memory consumption due to the handling of untrusted inputs. These inputs cause the message broker to consume large amounts of memory, resulting in the application being terminated by the operating system."
+}{
     "id": "CVE-2017-7670",
     "cwe": "CWE-400",
     "summary": "The Traffic Router component of the incubating Apache Traffic Control project is vulnerable to a Slowloris style Denial of Service attack. TCP connections made on the configured DNS port will remain in the ESTABLISHED state until the client explicitly closes the connection or Traffic Router is restarted. If connections remain in the ESTABLISHED state indefinitely and accumulate in number to match the size of the thread pool dedicated to processing DNS requests, the thread pool becomes exhausted. Once the thread pool is exhausted, Traffic Router is unable to service any DNS request, regardless of transport protocol."
@@ -394,6 +738,10 @@
     "id": "CVE-2019-10072",
     "cwe": "CWE-667",
     "summary": "The fix for CVE-2019-0199 was incomplete and did not address HTTP/2 connection window exhaustion on write in Apache Tomcat versions 9.0.0.M1 to 9.0.19 and 8.5.0 to 8.5.40 . By not sending WINDOW_UPDATE messages for the connection window (stream 0) clients were able to cause server-side threads to block eventually leading to thread exhaustion and a DoS."
+}{
+    "id": "CVE-2020-5416",
+    "cwe": "CWE-404",
+    "summary": "Cloud Foundry Routing (Gorouter), versions prior to 0.204.0, when used in a deployment with NGINX reverse proxies in front of the Gorouters, is potentially vulnerable to denial-of-service attacks in which an unauthenticated malicious attacker can send specially-crafted HTTP requests that may cause the Gorouters to be dropped from the NGINX backend pool."
 }{
     "id": "CVE-2018-1333",
     "cwe": "CWE-400",
@@ -447,6 +795,14 @@
     "cwe": "CWE-400",
     "summary": "uap-core in an open-source npm package which contains the core of BrowserScope's original user agent string parser. In uap-core before version 0.11.0, some regexes are vulnerable to regular expression denial of service (REDoS) due to overlapping capture groups. This allows remote attackers to overload a server by setting the User-Agent header in an HTTP(S) request to maliciously crafted long strings. This is fixed in version 0.11.0. Downstream packages such as uap-python, uap-ruby etc which depend upon uap-core follow different version schemes."
 }{
+    "id": "CVE-2021-1378",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability in the SSH service of the Cisco StarOS operating system could allow an unauthenticated, remote attacker to cause an affected device to stop processing traffic, resulting in a denial of service (DoS) condition. The vulnerability is due to a logic error that may occur under specific traffic conditions. An attacker could exploit this vulnerability by sending a series of crafted packets to an affected device. A successful exploit could allow the attacker to prevent the targeted service from receiving any traffic, which would lead to a DoS condition on the affected device."
+}{
+    "id": "CVE-2021-25666",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability has been identified in SCALANCE W780 and W740 (IEEE 802.11n) family (All versions < V6.3). Sending specially crafted packets through the ARP protocol to an affected device could cause a partial denial-of-service, preventing the device to operate normally for a short period of time."
+}{
     "id": "CVE-2021-26530",
     "cwe": "CWE-787",
     "summary": "The mg_tls_init function in Cesanta Mongoose HTTPS server 7.0 (compiled with OpenSSL support) is vulnerable to remote OOB write attack via connection request after exhausting memory pool."
@@ -479,9 +835,17 @@
     "cwe": "CWE-401",
     "summary": "A vulnerability in the IPv4 protocol handling of Cisco StarOS could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. The vulnerability is due to a memory leak that occurs during packet processing. An attacker could exploit this vulnerability by sending a series of crafted IPv4 packets through an affected device. A successful exploit could allow the attacker to exhaust the available memory and cause an unexpected restart of the npusim process, leading to a DoS condition on the affected device."
 }{
+    "id": "CVE-2021-1350",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the web UI of Cisco Umbrella could allow an unauthenticated, remote attacker to negatively affect the performance of this service. The vulnerability exists due to insufficient rate limiting controls in the web UI. An attacker could exploit this vulnerability by sending crafted HTTPS packets at a high and sustained rate. A successful exploit could allow the attacker to negatively affect the performance of the web UI. Cisco has addressed this vulnerability."
+}{
     "id": "CVE-2021-22166",
     "cwe": "CWE-400",
     "summary": "An attacker could cause a Prometheus denial of service in GitLab 13.7+ by sending an HTTP request with a malformed method"
+}{
+    "id": "CVE-2020-35359",
+    "cwe": "CWE-770",
+    "summary": "Pure-FTPd 1.0.48 allows remote attackers to prevent legitimate server use by making enough connections to exceed the connection limit."
 }{
     "id": "CVE-2020-27722",
     "cwe": "CWE-400",
@@ -491,6 +855,10 @@
     "cwe": "CWE-400",
     "summary": "Go Ethereum, or \"Geth\", is the official Golang implementation of the Ethereum protocol. In Geth before version 1.9.25 a denial-of-service vulnerability can make a LES server crash via malicious GetProofsV2 request from a connected LES client. This vulnerability only concerns users explicitly enabling les server; disabling les prevents the exploit. The vulnerability was patched in version 1.9.25."
 }{
+    "id": "CVE-2020-27713",
+    "cwe": "CWE-401",
+    "summary": "In certain configurations on version 13.1.3.4, when a BIG-IP AFM HTTP security profile is applied to a virtual server and the BIG-IP system receives a request with specific characteristics, the connection is reset and the Traffic Management Microkernel (TMM) leaks memory."
+}{
     "id": "CVE-2020-5666",
     "cwe": "CWE-400",
     "summary": "Uncontrolled resource consumption vulnerability in MELSEC iQ-R Series CPU Modules (R00/01/02CPU Firmware versions from '05' to '19' and R04/08/16/32/120(EN)CPU Firmware versions from '35' to '51') allows a remote attacker to cause an error in a CPU unit via a specially crafted HTTP packet, which may lead to a denial-of-service (DoS) condition in execution of the program and its communication."
@@ -499,13 +867,29 @@
     "cwe": "CWE-400",
     "summary": "BAB TECHNOLOGIE GmbH eibPort V3 prior to 3.8.3 devices allow denial of service (Uncontrolled Resource Consumption) via requests to the lighttpd component."
 }{
+    "id": "CVE-2020-26070",
+    "cwe": "CWE-404",
+    "summary": "A vulnerability in the ingress packet processing function of Cisco IOS XR Software for Cisco ASR 9000 Series Aggregation Services Routers could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. The vulnerability is due to improper resource allocation when an affected device processes network traffic in software switching mode (punted). An attacker could exploit this vulnerability by sending specific streams of Layer 2 or Layer 3 protocol data units (PDUs) to an affected device. A successful exploit could cause the affected device to run out of buffer resources, which could make the device unable to process or forward traffic, resulting in a DoS condition. The device would need to be restarted to regain functionality."
+}{
     "id": "CVE-2009-2521",
     "cwe": "CWE-400",
     "summary": "Stack consumption vulnerability in the FTP Service in Microsoft Internet Information Services (IIS) 5.0 through 7.0 allows remote authenticated users to cause a denial of service (daemon crash) via a list (ls) -R command containing a wildcard that references a subdirectory, followed by a .. (dot dot), aka \"IIS FTP Service DoS Vulnerability.\""
 }{
+    "id": "CVE-2020-28327",
+    "cwe": "CWE-404",
+    "summary": "A res_pjsip_session crash was discovered in Asterisk Open Source 13.x before 13.37.1, 16.x before 16.14.1, 17.x before 17.8.1, and 18.x before 18.0.1. and Certified Asterisk before 16.8-cert5. Upon receiving a new SIP Invite, Asterisk did not return the created dialog locked or referenced. This caused a gap between the creation of the dialog object, and its next use by the thread that created it. Depending on some off-nominal circumstances and timing, it was possible for another thread to free said dialog in this gap. Asterisk could then crash when the dialog object, or any of its dependent objects, were dereferenced or accessed next by the initial-creation thread. Note, however, that this crash can only occur when using a connection-oriented protocol (e.g., TCP or TLS, but not UDP) for SIP transport. Also, the remote client must be authenticated, or Asterisk must be configured for anonymous calling."
+}{
+    "id": "CVE-2020-3529",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability in the SSL VPN negotiation process for Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause a reload of an affected device, resulting in a denial of service (DoS) condition. The vulnerability is due to inefficient direct memory access (DMA) memory management during the negotiation phase of an SSL VPN connection. An attacker could exploit this vulnerability by sending a steady stream of crafted Datagram TLS (DTLS) traffic to an affected device. A successful exploit could allow the attacker to exhaust DMA memory on the device and cause a DoS condition."
+}{
     "id": "CVE-2020-3533",
     "cwe": "CWE-400",
     "summary": "A vulnerability in the Simple Network Management Protocol (SNMP) input packet processor of Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause an affected device to restart unexpectedly. The vulnerability is due to a lack of sufficient memory management protections under heavy SNMP polling loads. An attacker could exploit this vulnerability by sending a high rate of SNMP requests to the SNMP daemon through the management interface on an affected device. A successful exploit could allow the attacker to cause the SNMP daemon process to consume a large amount of system memory over time, which could then lead to an unexpected device restart, causing a denial of service (DoS) condition. This vulnerability affects all versions of SNMP."
+}{
+    "id": "CVE-2020-1683",
+    "cwe": "CWE-401",
+    "summary": "On Juniper Networks Junos OS devices, a specific SNMP OID poll causes a memory leak which over time leads to a kernel crash (vmcore). Prior to the kernel crash other processes might be impacted, such as failure to establish SSH connection to the device. The administrator can monitor the output of the following command to check if there is memory leak caused by this issue: user@device> show system virtual-memory | match \"pfe_ipc|kmem\" pfe_ipc 147 5K - 164352 16,32,64,8192 <-- increasing vm.kmem_map_free: 127246336 <-- decreasing pfe_ipc 0 0K - 18598 32,8192 vm.kmem_map_free: 134582272 This issue affects Juniper Networks Junos OS: 17.4R3; 18.1 version 18.1R3-S5 and later versions prior to 18.1R3-S10; 18.2 version 18.2R3 and later versions prior to 18.2R3-S3; 18.2X75 version 18.2X75-D420, 18.2X75-D50 and later versions prior to 18.2X75-D430, 18.2X75-D53, 18.2X75-D60; 18.3 version 18.3R3 and later versions prior to 18.3R3-S2; 18.4 version 18.4R1-S4, 18.4R2 and later versions prior to 18.4R2-S5, 18.4R3-S1; 19.1 version 19.1R2 and later versions prior to 19.1R2-S2, 19.1R3; 19.2 version 19.2R1 and later versions prior to 19.2R1-S5, 19.2R2; 19.3 versions prior to 19.3R2-S5, 19.3R3; 19.4 versions prior to 19.4R1-S3, 19.4R2. This issue does not affect Juniper Networks Junos OS prior to 17.4R3."
 }{
     "id": "CVE-2016-8610",
     "cwe": "CWE-400",
@@ -515,9 +899,33 @@
     "cwe": "CWE-400",
     "summary": "Apache Subversion's mod_dontdothat module and HTTP clients 1.4.0 through 1.8.16, and 1.9.0 through 1.9.4 are vulnerable to a denial-of-service attack caused by exponential XML entity expansion. The attack can cause the targeted process to consume an excessive amount of CPU resources or memory."
 }{
+    "id": "CVE-2020-4756",
+    "cwe": "CWE-404",
+    "summary": "IBM Spectrum Scale V4.2.0.0 through V4.2.3.23 and V5.0.0.0 through V5.0.5.2 as well as IBM Elastic Storage System 6.0.0 through 6.0.1.0 could allow a local attacker to invoke a subset of ioctls on the device with invalid arguments that could crash the keneral and cause a denial of service. IBM X-Force ID: 188599."
+}{
+    "id": "CVE-2020-1683",
+    "cwe": "CWE-401",
+    "summary": "On Juniper Networks Junos OS devices, a specific SNMP OID poll causes a memory leak which over time leads to a kernel crash (vmcore). Prior to the kernel crash other processes might be impacted, such as failure to establish SSH connection to the device. The administrator can monitor the output of the following command to check if there is memory leak caused by this issue: user@device> show system virtual-memory | match \"pfe_ipc|kmem\" pfe_ipc 147 5K - 164352 16,32,64,8192 <-- increasing vm.kmem_map_free: 127246336 <-- decreasing pfe_ipc 0 0K - 18598 32,8192 vm.kmem_map_free: 134582272 This issue affects Juniper Networks Junos OS: 17.4R3; 18.1 version 18.1R3-S5 and later versions prior to 18.1R3-S10; 18.2 version 18.2R3 and later versions prior to 18.2R3-S3; 18.2X75 version 18.2X75-D420, 18.2X75-D50 and later versions prior to 18.2X75-D430, 18.2X75-D53, 18.2X75-D60; 18.3 version 18.3R3 and later versions prior to 18.3R3-S2; 18.4 version 18.4R1-S4, 18.4R2 and later versions prior to 18.4R2-S5, 18.4R3-S1; 19.1 version 19.1R2 and later versions prior to 19.1R2-S2, 19.1R3; 19.2 version 19.2R1 and later versions prior to 19.2R1-S5, 19.2R2; 19.3 versions prior to 19.3R2-S5, 19.3R3; 19.4 versions prior to 19.4R1-S3, 19.4R2. This issue does not affect Juniper Networks Junos OS prior to 17.4R3."
+}{
     "id": "CVE-2020-3596",
     "cwe": "CWE-670",
     "summary": "A vulnerability in the Session Initiation Protocol (SIP) of Cisco Expressway Series and Cisco TelePresence Video Communication Server (VCS) could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. The vulnerability is due to incorrect handling of incoming SIP traffic. An attacker could exploit this vulnerability by sending a series of SIP packets to an affected device. A successful exploit could allow the attacker to exhaust memory on an affected device, causing it to crash and leading to a DoS condition."
+}{
+    "id": "CVE-2019-5739",
+    "cwe": "CWE-770",
+    "summary": "Keep-alive HTTP and HTTPS connections can remain open and inactive for up to 2 minutes in Node.js 6.16.0 and earlier. Node.js 8.0.0 introduced a dedicated server.keepAliveTimeout which defaults to 5 seconds. The behavior in Node.js 6.16.0 and earlier is a potential Denial of Service (DoS) attack vector. Node.js 6.17.0 introduces server.keepAliveTimeout and the 5-second default."
+}{
+    "id": "CVE-2019-5737",
+    "cwe": "CWE-770",
+    "summary": "In Node.js including 6.x before 6.17.0, 8.x before 8.15.1, 10.x before 10.15.2, and 11.x before 11.10.1, an attacker can cause a Denial of Service (DoS) by establishing an HTTP or HTTPS connection in keep-alive mode and by sending headers very slowly. This keeps the connection and associated resources alive for a long period of time. Potential attacks are mitigated by the use of a load balancer or other proxy layer. This vulnerability is an extension of CVE-2018-12121, addressed in November and impacts all active Node.js release lines including 6.x before 6.17.0, 8.x before 8.15.1, 10.x before 10.15.2, and 11.x before 11.10.1."
+}{
+    "id": "CVE-2019-1814",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the interactions between the DHCP and TFTP features for Cisco Small Business 300 Series (Sx300) Managed Switches could allow an unauthenticated, remote attacker to cause the device to become low on system memory, which in turn could lead to an unexpected reload of the device and result in a denial of service (DoS) condition on an affected device. The vulnerability is due to a failure to free system memory when an unexpected DHCP request is received. An attacker could exploit this vulnerability by sending a crafted DHCP packet to the targeted device. A successful exploit could allow the attacker to cause an unexpected reload of the device."
+}{
+    "id": "CVE-2019-1806",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the Simple Network Management Protocol (SNMP) input packet processor of Cisco Small Business Sx200, Sx300, Sx500, ESW2 Series Managed Switches and Small Business Sx250, Sx350, Sx550 Series Switches could allow an authenticated, remote attacker to cause the SNMP application of an affected device to cease processing traffic, resulting in the CPU utilization reaching one hundred percent. Manual intervention may be required before a device resumes normal operations. The vulnerability is due to improper validation of SNMP protocol data units (PDUs) in SNMP packets. An attacker could exploit this vulnerability by sending a malicious SNMP packet to an affected device. A successful exploit could allow the attacker to cause the device to cease forwarding traffic, which could result in a denial of service (DoS) condition. Cisco has released firmware updates that address this vulnerability."
 }{
     "id": "CVE-2019-1967",
     "cwe": "CWE-400",
@@ -531,6 +939,14 @@
     "cwe": "CWE-400",
     "summary": "A vulnerability has been identified in SIMATIC WinAC RTX (F) 2010 (All versions < SP3 Update 1). Affected versions of the software contain a vulnerability that could allow an unauthenticated attacker to trigger a denial-of-service condition. The vulnerability can be triggered if a large HTTP request is sent to the executing service. The security vulnerability could be exploited by an attacker with network access to the affected systems. Successful exploitation requires no system privileges and no user interaction. An attacker could use the vulnerability to compromise availability of the service provided by the software."
 }{
+    "id": "CVE-2019-15262",
+    "cwe": "CWE-404",
+    "summary": "A vulnerability in the Secure Shell (SSH) session management for Cisco Wireless LAN Controller (WLC) Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on an affected device. The vulnerability exists because the SSH process is not properly deleted when an SSH connection to the device is disconnected. An attacker could exploit this vulnerability by repeatedly opening SSH connections to an affected device. A successful exploit could allow the attacker to exhaust system resources by initiating multiple SSH connections to the device that are not effectively terminated, which could result in a DoS condition."
+}{
+    "id": "CVE-2019-1599",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the network stack of Cisco NX-OS Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition on the affected device. The vulnerability is due to an issue with allocating and freeing memory buffers in the network stack. An attacker could exploit this vulnerability by sending crafted TCP streams to an affected device in a sustained way. A successful exploit could cause the network stack of an affected device to run out of available buffers, impairing operations of control plane and management plane protocols, resulting in a DoS condition. Note: This vulnerability can be triggered only by traffic that is destined to an affected device and cannot be exploited using traffic that transits an affected device. Nexus 1000V Switch for Microsoft Hyper-V is affected in versions prior to 5.2(1)SM3(2.1). Nexus 1000V Switch for VMware vSphere is affected in versions prior to 5.2(1)SV3(4.1a). Nexus 3000 Series Switches are affected in versions prior to 7.0(3)I7(6) and 9.2(2). Nexus 3500 Platform Switches are affected in versions prior to 6.0(2)A8(11), 7.0(3)I7(6), and 9.2(2). Nexus 3600 Platform Switches are affected in versions prior to 7.0(3)F3(5) and 9.2(2). Nexus 5500, 5600, and 6000 Series Switches are affected in versions prior to 7.1(5)N1(1b) and 7.3(5)N1(1). Nexus 7000 and 7700 Series Switches are affected in versions prior to 6.2(22. Nexus 9500 R-Series Line Cards and Fabric Modules are affected in versions prior to 7.0(3)F3(5) and 9.2(2). UCS 6200 and 6300 Series Fabric Interconnect are affected in versions prior to 3.2(3j) and 4.0(2a). UCS 6400 Series Fabric Interconnect are affected in versions prior to 4.0(2a)."
+}{
     "id": "CVE-2019-12659",
     "cwe": "CWE-400",
     "summary": "A vulnerability in the HTTP server code of Cisco IOS XE Software could allow an unauthenticated, remote attacker to cause the HTTP server to crash. The vulnerability is due to a logical error in the logging mechanism. An attacker could exploit this vulnerability by generating a high amount of long-lived connections to the HTTP service on the device. A successful exploit could allow the attacker to cause the HTTP server to crash."
@@ -539,9 +955,17 @@
     "cwe": "CWE-400",
     "summary": "A vulnerability in the PROFINET handler for Link Layer Discovery Protocol (LLDP) messages of Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, adjacent attacker to cause a crash on an affected device, resulting in a denial of service (DoS) condition. The vulnerability is due to insufficient validation of LLDP messages in the PROFINET LLDP message handler. An attacker could exploit this vulnerability by sending a malicious LLDP message to an affected device. A successful exploit could allow the attacker to cause the affected device to reload."
 }{
+    "id": "CVE-2019-12700",
+    "cwe": "NVD-CWE-Other",
+    "summary": "A vulnerability in the configuration of the Pluggable Authentication Module (PAM) used in Cisco Firepower Threat Defense (FTD) Software, Cisco Firepower Management Center (FMC) Software, and Cisco FXOS Software could allow an authenticated, remote attacker to cause a denial of service (DoS) condition. The vulnerability is due to improper resource management in the context of user session management. An attacker could exploit this vulnerability by connecting to an affected system and performing many simultaneous successful Secure Shell (SSH) logins. A successful exploit could allow the attacker to exhaust system resources and cause the device to reload, resulting in a DoS condition. To exploit this vulnerability, the attacker needs valid user credentials on the system."
+}{
     "id": "CVE-2019-1721",
     "cwe": "CWE-20",
     "summary": "A vulnerability in the phone book feature of Cisco Expressway Series and Cisco TelePresence Video Communication Server (VCS) could allow an authenticated, remote attacker to cause the CPU to increase to 100% utilization, causing a denial of service (DoS) condition on an affected system. The vulnerability is due to improper handling of the XML input. An attacker could exploit this vulnerability by sending a Session Initiation Protocol (SIP) message with a crafted XML payload to an affected device. A successful exploit could allow the attacker to exhaust CPU resources, resulting in a DoS condition. Manual intervention may be required to recover the device. This vulnerability is fixed in Cisco Expressway Series and Cisco TelePresence Video Communication Server Releases X12.5.1 and later."
+}{
+    "id": "CVE-2018-10432",
+    "cwe": "CWE-400",
+    "summary": "Pexip Infinity before 18 allows Remote Denial of Service (TLS handshakes in RTMP)."
 }{
     "id": "CVE-2020-3487",
     "cwe": "CWE-400",
@@ -550,6 +974,10 @@
     "id": "CVE-2019-1644",
     "cwe": "CWE-770",
     "summary": "A vulnerability in the UDP protocol implementation for Cisco IoT Field Network Director (IoT-FND) could allow an unauthenticated, remote attacker to exhaust system resources, resulting in a denial of service (DoS) condition. The vulnerability is due to improper resource management for UDP ingress packets. An attacker could exploit this vulnerability by sending a high rate of UDP packets to an affected system within a short period of time. A successful exploit could allow the attacker to exhaust available system resources, resulting in a DoS condition."
+}{
+    "id": "CVE-2019-11060",
+    "cwe": "CWE-770",
+    "summary": "The web api server on Port 8080 of ASUS HG100 firmware up to 1.05.12, which is vulnerable to Slowloris HTTP Denial of Service: an attacker can cause a Denial of Service (DoS) by sending headers very slowly to keep HTTP or HTTPS connections and associated resources alive for a long period of time. CVSS 3.0 Base score 7.4 (Availability impacts). CVSS vector: (CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H)."
 }{
     "id": "CVE-2018-7048",
     "cwe": "CWE-400",
@@ -566,6 +994,14 @@
     "id": "CVE-2020-25219",
     "cwe": "CWE-674",
     "summary": "url::recvline in url.cpp in libproxy 0.4.x through 0.4.15 allows a remote HTTP server to trigger uncontrolled recursion via a response composed of an infinite stream that lacks a newline character. This leads to stack exhaustion."
+}{
+    "id": "CVE-2018-10432",
+    "cwe": "CWE-400",
+    "summary": "Pexip Infinity before 18 allows Remote Denial of Service (TLS handshakes in RTMP)."
+}{
+    "id": "CVE-2018-10432",
+    "cwe": "CWE-400",
+    "summary": "Pexip Infinity before 18 allows Remote Denial of Service (TLS handshakes in RTMP)."
 }{
     "id": "CVE-2020-3428",
     "cwe": "CWE-400",
@@ -627,9 +1063,17 @@
     "cwe": "CWE-770",
     "summary": "A vulnerability in the Distance Vector Multicast Routing Protocol (DVMRP) feature of Cisco IOS XR Software could allow an unauthenticated, remote attacker to exhaust process memory of an affected device. The vulnerability is due to insufficient queue management for Internet Group Management Protocol (IGMP) packets. An attacker could exploit this vulnerability by sending crafted IGMP traffic to an affected device. A successful exploit could allow the attacker to cause memory exhaustion, resulting in instability of other processes. These processes may include, but are not limited to, interior and exterior routing protocols. Cisco will release software updates that address this vulnerability."
 }{
+    "id": "CVE-2020-5926",
+    "cwe": "CWE-404",
+    "summary": "In BIG-IP versions 15.1.0-15.1.0.4, 15.0.0-15.0.1.3, and 14.1.0-14.1.2.6, a BIG-IP virtual server with a Session Initiation Protocol (SIP) ALG profile, parsing SIP messages that contain a multi-part MIME payload with certain boundary strings can cause TMM to free memory to the wrong cache."
+}{
     "id": "CVE-2018-15399",
     "cwe": "CWE-770",
     "summary": "A vulnerability in the TCP syslog module of Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to exhaust the 1550-byte buffers on an affected device, resulting in a denial of service (DoS) condition. The vulnerability is due to a missing boundary check in an internal function. An attacker could exploit this vulnerability by establishing a man-in-the-middle position between an affected device and its configured TCP syslog server and then maliciously modifying the TCP header in segments that are sent from the syslog server to the affected device. A successful exploit could allow the attacker to exhaust buffer on the affected device and cause all TCP-based features to stop functioning, resulting in a DoS condition. The affected TCP-based features include AnyConnect SSL VPN, clientless SSL VPN, and management connections such as Secure Shell (SSH), Telnet, and HTTPS."
+}{
+    "id": "CVE-2019-9228",
+    "cwe": "NVD-CWE-noinfo",
+    "summary": "** DISPUTED ** An issue was discovered on AudioCodes Mediant 500L-MSBR, 500-MBSR, M800B-MSBR and 800C-MSBR devices with firmware versions F7.20A at least to 7.20A.252.062. The (1) management SSH and (2) management TELNET features allow remote attackers to cause a denial of service (connection slot exhaustion) via 5 unauthenticated connection attempts, because the maximum number of unauthenticated clients that can be configured is 5. NOTE: the vendor's position is that this is a \"design choice.\""
 }{
     "id": "CVE-2019-13954",
     "cwe": "CWE-770",
@@ -679,9 +1123,25 @@
     "cwe": "CWE-400",
     "summary": "A vulnerability in the web-based management interface of Cisco SD-WAN vManage Software could allow an authenticated, remote attacker to consume excessive system memory and cause a denial of service (DoS) condition on an affected system. The vulnerability is due to inefficient memory management. An attacker could exploit this vulnerability by sending a large number of crafted HTTP requests to the affected web-based management interface. A successful exploit could allow the attacker to exhaust system memory, which could cause the system to stop processing new connections and could result in a DoS condition."
 }{
+    "id": "CVE-2020-8551",
+    "cwe": "CWE-770",
+    "summary": "The Kubelet component in versions 1.15.0-1.15.9, 1.16.0-1.16.6, and 1.17.0-1.17.2 has been found to be vulnerable to a denial of service attack via the kubelet API, including the unauthenticated HTTP read-only API typically served on port 10255, and the authenticated HTTPS API typically served on port 10250."
+}{
+    "id": "CVE-2020-14642",
+    "cwe": "CWE-404",
+    "summary": "Vulnerability in the Oracle Coherence product of Oracle Fusion Middleware (component: CacheStore). Supported versions that are affected are 3.7.1.0, 12.1.3.0.0, 12.2.1.3.0, 12.2.1.4.0 and 14.1.1.0.0. Easily exploitable vulnerability allows unauthenticated attacker with network access via HTTP to compromise Oracle Coherence. Successful attacks of this vulnerability can result in unauthorized ability to cause a hang or frequently repeatable crash (complete DOS) of Oracle Coherence. CVSS 3.1 Base Score 7.5 (Availability impacts). CVSS Vector: (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H)."
+}{
+    "id": "CVE-2020-14630",
+    "cwe": "CWE-404",
+    "summary": "Vulnerability in the Oracle Enterprise Session Border Controller product of Oracle Communications Applications (component: File Upload). Supported versions that are affected are 8.1.0, 8.2.0 and 8.3.0. Easily exploitable vulnerability allows high privileged attacker with network access via HTTP to compromise Oracle Enterprise Session Border Controller. Successful attacks require human interaction from a person other than the attacker and while the vulnerability is in Oracle Enterprise Session Border Controller, attacks may significantly impact additional products. Successful attacks of this vulnerability can result in unauthorized ability to cause a hang or frequently repeatable crash (complete DOS) of Oracle Enterprise Session Border Controller as well as unauthorized update, insert or delete access to some of Oracle Enterprise Session Border Controller accessible data and unauthorized read access to a subset of Oracle Enterprise Session Border Controller accessible data. CVSS 3.1 Base Score 7.5 (Confidentiality, Integrity and Availability impacts). CVSS Vector: (CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:C/C:L/I:L/A:H)."
+}{
     "id": "CVE-2020-12603",
     "cwe": "CWE-400",
     "summary": "Envoy version 1.14.2, 1.13.2, 1.12.4 or earlier may consume excessive amounts of memory when proxying HTTP/2 requests or responses with many small (i.e. 1 byte) data frames."
+}{
+    "id": "CVE-2020-10280",
+    "cwe": "CWE-404",
+    "summary": "The Apache server on port 80 that host the web interface is vulnerable to a DoS by spamming incomplete HTTP headers, effectively blocking the access to the dashboard."
 }{
     "id": "CVE-2020-13849",
     "cwe": "CWE-400",
@@ -690,6 +1150,10 @@
     "id": "CVE-2020-3305",
     "cwe": "CWE-400",
     "summary": "A vulnerability in the implementation of the Border Gateway Protocol (BGP) module in Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition. The vulnerability is due to incorrect processing of certain BGP packets. An attacker could exploit this vulnerability by sending a crafted BGP packet. A successful exploit could allow the attacker to cause a DoS condition on the affected device."
+}{
+    "id": "CVE-2020-3196",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability in the Secure Sockets Layer (SSL)/Transport Layer Security (TLS) handler of Cisco Adaptive Security Appliance (ASA) Software and Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to exhaust memory resources on the affected device, leading to a denial of service (DoS) condition. The vulnerability is due to improper resource management for inbound SSL/TLS connections. An attacker could exploit this vulnerability by establishing multiple SSL/TLS connections with specific conditions to the affected device. A successful exploit could allow the attacker to exhaust the memory on the affected device, causing the device to stop accepting new SSL/TLS connections and resulting in a DoS condition for services on the device that process SSL/TLS traffic. Manual intervention is required to recover an affected device."
 }{
     "id": "CVE-2020-3254",
     "cwe": "CWE-400",
@@ -775,6 +1239,18 @@
     "cwe": "CWE-400",
     "summary": "Multiple vulnerabilities in the Server Message Block (SMB) Protocol preprocessor detection engine for Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, adjacent or remote attacker to cause a denial of service (DoS) condition. For more information about these vulnerabilities, see the Details section of this advisory."
 }{
+    "id": "CVE-2018-15404",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the web interface of Cisco Integrated Management Controller (IMC) Supervisor and Cisco UCS Director could allow an authenticated, remote attacker to cause a denial of service (DoS) condition on an affected system. The vulnerability is due to insufficient restrictions on the size or total amount of resources allowed via the web interface. An attacker who has valid credentials for the application could exploit this vulnerability by sending a crafted or malformed HTTP request to the web interface. A successful exploit could allow the attacker to cause oversubscription of system resources or cause a component to become unresponsive, resulting in a DoS condition."
+}{
+    "id": "CVE-2018-13296",
+    "cwe": "CWE-400",
+    "summary": "Uncontrolled resource consumption vulnerability in TLS configuration in Synology MailPlus Server before 2.0.5-0606 allows remote attackers to conduct denial-of-service attacks via client-initiated renegotiation."
+}{
+    "id": "CVE-2018-0061",
+    "cwe": "CWE-400",
+    "summary": "A denial of service vulnerability in the telnetd service on Junos OS allows remote unauthenticated users to cause high CPU usage which may affect system performance. Affected releases are Juniper Networks Junos OS: 12.1X46 versions prior to 12.1X46-D81 on SRX Series; 12.3 versions prior to 12.3R12-S11; 12.3X48 versions prior to 12.3X48-D80 on SRX Series; 15.1 versions prior to 15.1R7; 15.1X49 versions prior to 15.1X49-D150, 15.1X49-D160 on SRX Series; 15.1X53 versions prior to 15.1X53-D59 on EX2300/EX3400 Series; 15.1X53 versions prior to 15.1X53-D68 on QFX10K Series; 15.1X53 versions prior to 15.1X53-D235 on QFX5200/QFX5110 Series; 15.1X53 versions prior to 15.1X53-D495 on NFX Series; 16.1 versions prior to 16.1R4-S12, 16.1R6-S6, 16.1R7; 16.2 versions prior to 16.2R2-S7, 16.2R3; 17.1 versions prior to 17.1R2-S9, 17.1R3; 17.2 versions prior to 17.2R2-S6, 17.2R3; 17.2X75 versions prior to 17.2X75-D100; 17.3 versions prior to 17.3R2-S4, 17.3R3; 17.4 versions prior to 17.4R1-S5, 17.4R2; 18.2X75 versions prior to 18.2X75-D5."
+}{
     "id": "CVE-2018-0048",
     "cwe": "CWE-400",
     "summary": "A vulnerability in the Routing Protocols Daemon (RPD) with Juniper Extension Toolkit (JET) support can allow a network based unauthenticated attacker to cause a severe memory exhaustion condition on the device. This can have an adverse impact on the system performance and availability. This issue only affects devices with JET support running Junos OS 17.2R1 and subsequent releases. Other versions of Junos OS are unaffected by this vulnerability. Affected releases are Juniper Networks Junos OS: 17.2 versions prior to 17.2R1-S7, 17.2R2-S6, 17.2R3; 17.2X75 versions prior to 17.2X75-D102, 17.2X75-D110; 17.3 versions prior to 17.3R2-S4, 17.3R3; 17.4 versions prior to 17.4R1-S5, 17.4R2; 18.1 versions prior to 18.1R2-S3, 18.1R3;"
@@ -823,9 +1299,29 @@
     "cwe": "CWE-400",
     "summary": "A vulnerability in the Internet Key Exchange Version 2 (IKEv2) module of Cisco IOS 15.0 through 15.6 and Cisco IOS XE 3.5 through 16.5 could allow an unauthenticated, remote attacker to cause high CPU utilization, traceback messages, or a reload of an affected device that leads to a denial of service (DoS) condition. The vulnerability is due to how an affected device processes certain IKEv2 packets. An attacker could exploit this vulnerability by sending specific IKEv2 packets to an affected device to be processed. A successful exploit could allow the attacker to cause high CPU utilization, traceback messages, or a reload of the affected device that leads to a DoS condition. This vulnerability affects Cisco devices that have the Internet Security Association and Key Management Protocol (ISAKMP) enabled. Although only IKEv2 packets can be used to trigger this vulnerability, devices that are running Cisco IOS Software or Cisco IOS XE Software are vulnerable when ISAKMP is enabled. A device does not need to be configured with any IKEv2-specific features to be vulnerable. Many features use IKEv2, including different types of VPNs such as the following: LAN-to-LAN VPN; Remote-access VPN, excluding SSL VPN; Dynamic Multipoint VPN (DMVPN); and FlexVPN. Cisco Bug IDs: CSCvc41277."
 }{
+    "id": "CVE-2017-10621",
+    "cwe": "CWE-400",
+    "summary": "A denial of service vulnerability in telnetd service on Juniper Networks Junos OS allows remote unauthenticated attackers to cause a denial of service. Affected Junos OS releases are: 12.1X46 prior to 12.1X46-D71; 12.3X48 prior to 12.3X48-D50; 14.1 prior to 14.1R8-S5, 14.1R9; 14.1X53 prior to 14.1X53-D50; 14.2 prior to 14.2R7-S9, 14.2R8; 15.1 prior to 15.1F2-S16, 15.1F5-S7, 15.1F6-S6, 15.1R5-S2, 15.1R6; 15.1X49 prior to 15.1X49-D90; 15.1X53 prior to 15.1X53-D47; 16.1 prior to 16.1R4-S1, 16.1R5; 16.2 prior to 16.2R1-S3, 16.2R2;"
+}{
+    "id": "CVE-2017-10614",
+    "cwe": "CWE-400",
+    "summary": "A vulnerability in telnetd service on Junos OS allows a remote attacker to cause a limited memory and/or CPU consumption denial of service attack. This issue was found during internal product security testing. Affected releases are Juniper Networks Junos OS 12.1X46 prior to 12.1X46-D45; 12.3X48 prior to 12.3X48-D30; 14.1 prior to 14.1R4-S9, 14.1R8; 14.2 prior to 14.2R6; 15.1 prior to 15.1F5, 15.1R3; 15.1X49 prior to 15.1X49-D40; 15.1X53 prior to 15.1X53-D232, 15.1X53-D47."
+}{
     "id": "CVE-2016-9589",
     "cwe": "CWE-400",
     "summary": "Undertow in Red Hat wildfly before version 11.0.0.Beta1 is vulnerable to a resource exhaustion resulting in a denial of service. Undertow keeps a cache of seen HTTP headers in persistent connections. It was found that this cache can easily exploited to fill memory with garbage, up to \"max-headers\" (default 200) * \"max-header-size\" (default 1MB) per active TCP connection."
+}{
+    "id": "CVE-2018-7582",
+    "cwe": "CWE-770",
+    "summary": "WebLog Expert Web Server Enterprise 9.4 allows Remote Denial Of Service (daemon crash) via a long HTTP Accept Header to TCP port 9991."
+}{
+    "id": "CVE-2017-5650",
+    "cwe": "CWE-404",
+    "summary": "In Apache Tomcat 9.0.0.M1 to 9.0.0.M18 and 8.5.0 to 8.5.12, the handling of an HTTP/2 GOAWAY frame for a connection did not close streams associated with that connection that were currently waiting for a WINDOW_UPDATE before allowing the application to write more data. These waiting streams each consumed a thread. A malicious client could therefore construct a series of HTTP/2 requests that would consume all available processing threads."
+}{
+    "id": "CVE-2017-5850",
+    "cwe": "CWE-770",
+    "summary": "httpd in OpenBSD allows remote attackers to cause a denial of service (memory consumption) via a series of requests for a large file using an HTTP Range header."
 }{
     "id": "CVE-2018-17281",
     "cwe": "CWE-400",
@@ -835,9 +1331,17 @@
     "cwe": "CWE-770",
     "summary": "A vulnerability in the implementation of Cisco Discovery Protocol functionality in Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, adjacent attacker to exhaust memory on an affected device, resulting in a denial of service (DoS) condition. The vulnerability is due to improper memory handling by the affected software when the software processes high rates of Cisco Discovery Protocol packets that are sent to a device. An attacker could exploit this vulnerability by sending a high rate of Cisco Discovery Protocol packets to an affected device. A successful exploit could allow the attacker to exhaust memory on the affected device, resulting in a DoS condition."
 }{
+    "id": "CVE-2017-3555",
+    "cwe": "CWE-770",
+    "summary": "Vulnerability in the Oracle iReceivables component of Oracle E-Business Suite (subcomponent: Self Registration). Supported versions that are affected are 12.1.1, 12.1.2, 12.1.3, 12.2.3, 12.2.4, 12.2.5 and 12.2.6. Easily \"exploitable\" vulnerability allows unauthenticated attacker with network access via HTTP to compromise Oracle iReceivables. Successful attacks of this vulnerability can result in unauthorized ability to cause a hang or frequently repeatable crash (complete DOS) of Oracle iReceivables. CVSS 3.0 Base Score 7.5 (Availability impacts). CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H)."
+}{
     "id": "CVE-2017-2312",
     "cwe": "CWE-772",
     "summary": "On Juniper Networks devices running Junos OS affected versions and with LDP enabled, a specific LDP packet destined to the RE (Routing Engine) will consume a small amount of the memory allocated for the rpd (routing protocol daemon) process. Over time, repeatedly receiving this type of LDP packet(s) will cause the memory to exhaust and the rpd process to crash and restart. It is not possible to free up the memory that has been consumed without restarting the rpd process. This issue affects Junos OS based devices with either IPv4 or IPv6 LDP enabled via the [protocols ldp] configuration (the native IPv6 support for LDP is available in Junos OS 16.1 and higher). The interface on which the packet arrives needs to have LDP enabled. The affected Junos versions are: 13.3 prior to 13.3R10; 14.1 prior to 14.1R8; 14.2 prior to 14.2R7-S6 or 14.2R8; 15.1 prior to 15.1F2-S14, 15.1F6-S4, 15.1F7, 15.1R4-S7, 15.1R5; 15.1X49 before 15.1X49-D70; 15.1X53 before 15.1X53-D230, 15.1X53-D63, 15.1X53-D70; 16.1 before 16.1R2. 16.2R1 and all subsequent releases have a resolution for this vulnerability."
+}{
+    "id": "CVE-2018-15462",
+    "cwe": "CWE-770",
+    "summary": "A vulnerability in the TCP ingress handler for the data interfaces that are configured with management access to Cisco Firepower Threat Defense (FTD) Software could allow an unauthenticated, remote attacker to cause an increase in CPU and memory usage, resulting in a denial of service (DoS) condition. The vulnerability is due to insufficient ingress TCP rate limiting for TCP ports 22 (SSH) and 443 (HTTPS). An attacker could exploit this vulnerability by sending a crafted, steady stream of TCP traffic to port 22 or 443 on the data interfaces that are configured with management access to the affected device."
 }{
     "id": "CVE-2017-17290",
     "cwe": "CWE-400",
@@ -891,13 +1395,25 @@
     "cwe": "CWE-79",
     "summary": "Dojo Dojo Objective Harness (DOH) version prior to version 1.14 contains a Cross Site Scripting (XSS) vulnerability in unit.html and testsDOH/_base/loader/i18n-exhaustive/i18n-test/unit.html and testsDOH/_base/i18nExhaustive.js in the DOH that can result in Victim attacked through their browser - deliver malware, steal HTTP cookies, bypass CORS trust. This attack appear to be exploitable via Victims are typically lured to a web site under the attacker's control; the XSS vulnerability on the target domain is silently exploited without the victim's knowledge. This vulnerability appears to have been fixed in 1.14."
 }{
+    "id": "CVE-2006-1206",
+    "cwe": "NVD-CWE-Other",
+    "summary": "Matt Johnston Dropbear SSH server 0.47 and earlier, as used in embedded Linux devices and on general-purpose operating systems, allows remote attackers to cause a denial of service (connection slot exhaustion) via a large number of connection attempts that exceeds the MAX_UNAUTH_CLIENTS defined value of 30."
+}{
     "id": "CVE-2006-3906",
     "cwe": "NVD-CWE-Other",
     "summary": "Internet Key Exchange (IKE) version 1 protocol, as implemented on Cisco IOS, VPN 3000 Concentrators, and PIX firewalls, allows remote attackers to cause a denial of service (resource exhaustion) via a flood of IKE Phase-1 packets that exceed the session expiration rate. NOTE: it has been argued that this is due to a design weakness of the IKE version 1 protocol, in which case other vendors and implementations would also be affected."
 }{
+    "id": "CVE-2007-4654",
+    "cwe": "CWE-399",
+    "summary": "Unspecified vulnerability in SSHield 1.6.1 with OpenSSH 3.0.2p1 on Cisco WebNS 8.20.0.1 on Cisco Content Services Switch (CSS) series 11000 devices allows remote attackers to cause a denial of service (connection slot exhaustion and device crash) via a series of large packets designed to exploit the SSH CRC32 attack detection overflow (CVE-2001-0144), possibly a related issue to CVE-2002-1024."
+}{
     "id": "CVE-2001-0540",
     "cwe": "NVD-CWE-Other",
     "summary": "Memory leak in Terminal servers in Windows NT and Windows 2000 allows remote attackers to cause a denial of service (memory exhaustion) via a large number of malformed Remote Desktop Protocol (RDP) requests to port 3389."
+}{
+    "id": "CVE-2001-0505",
+    "cwe": "NVD-CWE-Other",
+    "summary": "Multiple memory leaks in Microsoft Services for Unix 2.0 allow remote attackers to cause a denial of service (memory exhaustion) via a large number of malformed requests to (1) the Telnet service, or (2) the NFS service."
 }{
     "id": "CVE-1999-1148",
     "cwe": "NVD-CWE-Other",
@@ -939,6 +1455,10 @@
     "cwe": "CWE-399",
     "summary": "In Android before 2018-04-05 or earlier security patch level on Qualcomm Snapdragon Mobile and Snapdragon Wear MDM9206, MDM9607, MDM9615, MDM9625, MDM9635M, MDM9640, MDM9645, MSM8909W, SD 210/SD 212/SD 205, SD 400, SD 410/12, SD 425, SD 430, SD 450, SD 600, SD 615/16/SD 415, SD 617, SD 625, SD 650/52, SD 800, SD 808, SD 810, and SD 820, UE crash is seen due to IPCMem exhaustion, when UDP data is pumped to UE's ULP (UserPlane Location protocol) UDP port 7275."
 }{
+    "id": "CVE-2016-6307",
+    "cwe": "CWE-400",
+    "summary": "The state-machine implementation in OpenSSL 1.1.0 before 1.1.0a allocates memory before checking for an excessive length, which might allow remote attackers to cause a denial of service (memory consumption) via crafted TLS messages, related to statem/statem.c and statem/statem_lib.c."
+}{
     "id": "CVE-2017-4920",
     "cwe": "CWE-400",
     "summary": "The implementation of the OSPF protocol in VMware NSX-V Edge 6.2.x prior to 6.2.8 and NSX-V Edge 6.3.x prior to 6.3.3 doesn't correctly handle the link-state advertisement (LSA). A rogue LSA may exploit this issue resulting in continuous sending of LSAs between two routers eventually going in loop or loss of connectivity."
@@ -955,6 +1475,10 @@
     "cwe": "NVD-CWE-Other",
     "summary": "Websweeper 4.0 does not limit the length of certain HTTP headers, which allows remote attackers to cause a denial of service (memory exhaustion) via an extremely large HTTP Referrer: header."
 }{
+    "id": "CVE-2017-6161",
+    "cwe": "CWE-400",
+    "summary": "In F5 BIG-IP LTM, AAM, AFM, Analytics, APM, ASM, DNS, Edge Gateway, GTM, Link Controller, PEM, WebAccelerator software version 12.0.0 - 12.1.2, 11.6.0 - 11.6.1, 11.4.0 - 11.5.4, 11.2.1, when ConfigSync is configured, attackers on adjacent networks may be able to bypass the TLS protections usually used to encrypted and authenticate connections to mcpd. This vulnerability may allow remote attackers to cause a denial-of-service (DoS) attack via resource exhaustion."
+}{
     "id": "CVE-2005-0256",
     "cwe": "CWE-119",
     "summary": "The wu_fnmatch function in wu_fnmatch.c in wu-ftpd 2.6.1 and 2.6.2 allows remote attackers to cause a denial of service (CPU exhaustion by recursion) via a glob pattern with a large number of * (wildcard) characters, as demonstrated using the dir command."
@@ -966,6 +1490,10 @@
     "id": "CVE-1999-1537",
     "cwe": "NVD-CWE-Other",
     "summary": "IIS 3.x and 4.x does not distinguish between pages requiring encryption and those that do not, which allows remote attackers to cause a denial of service (resource exhaustion) via SSL requests to the HTTPS port for normally unencrypted files, which will cause IIS to perform extra work to send the files over SSL."
+}{
+    "id": "CVE-2010-5107",
+    "cwe": "NVD-CWE-Other",
+    "summary": "The default configuration of OpenSSH through 6.1 enforces a fixed time limit between establishing a TCP connection and completing a login, which makes it easier for remote attackers to cause a denial of service (connection-slot exhaustion) by periodically making many new TCP connections."
 }{
     "id": "CVE-2014-6199",
     "cwe": "CWE-399",
@@ -991,6 +1519,10 @@
     "cwe": "NVD-CWE-noinfo",
     "summary": "Unspecified vulnerability in the \"session limitation technique\" in the FTP service on Nortel Communications Server 1000 (CS1K) 4.50.x, when running on VGMC or signaling nodes, allows remote attackers to cause a denial of service (resource exhaustion and failed updates) via unknown vectors that causes consumption of all available sessions."
 }{
+    "id": "CVE-2008-4109",
+    "cwe": "CWE-264",
+    "summary": "A certain Debian patch for OpenSSH before 4.3p2-9etch3 on etch; before 4.6p1-1 on sid and lenny; and on other distributions such as SUSE uses functions that are not async-signal-safe in the signal handler for login timeouts, which allows remote attackers to cause a denial of service (connection slot exhaustion) via multiple login attempts. NOTE: this issue exists because of an incorrect fix for CVE-2006-5051."
+}{
     "id": "CVE-2008-3683",
     "cwe": "NVD-CWE-noinfo",
     "summary": "Unspecified vulnerability in the FTP subsystem in Sun Java System Web Proxy Server 4.0 through 4.0.5 before SP6 allows remote attackers to cause a denial of service (failure to accept connections) via unknown vectors, probably related to exhaustion of file descriptors."
@@ -1003,6 +1535,14 @@
     "cwe": "NVD-CWE-noinfo",
     "summary": "Unspecified vulnerability in the Sun eXtended System Control Facility (XSCF) Control Package (XCP) firmware before 1050 on SPARC Enterprise M4000, M5000, M8000, and M9000 servers allows remote attackers to cause a denial of service (reboot) via (1) telnet, (2) ssh, or (3) http network traffic that triggers memory exhaustion."
 }{
+    "id": "CVE-2008-0132",
+    "cwe": "CWE-399",
+    "summary": "Pragma FortressSSH 5.0 Build 4 Revision 293 and earlier handles long input to sshd.exe by creating an error-message window and waiting for the administrator to click in this window before terminating the sshd.exe process, which allows remote attackers to cause a denial of service (connection slot exhaustion) via a flood of SSH connections with long data objects, as demonstrated by (1) a long list of keys and (2) a long username."
+}{
+    "id": "CVE-2008-0153",
+    "cwe": "CWE-399",
+    "summary": "telnetd.exe in Pragma TelnetServer 7.0.4.589 allows remote attackers to cause a denial of service (process crash and resource exhaustion) via a crafted TELOPT PRAGMA LOGON telnet option, which triggers a NULL pointer dereference."
+}{
     "id": "CVE-2016-6312",
     "cwe": "CWE-400",
     "summary": "The mod_dontdothat component of the mod_dav_svn Apache module in Subversion as packaged in Red Hat Enterprise Linux 5.11 does not properly detect recursion during entity expansion, which allows remote authenticated users with access to the webdav repository to cause a denial of service (memory consumption and httpd crash).  NOTE: Exists as a regression to CVE-2009-1955."
@@ -1014,6 +1554,10 @@
     "id": "CVE-2005-0734",
     "cwe": "NVD-CWE-Other",
     "summary": "PY Software Active Webcam WebServer (webcam.exe) 5.5 allows remote attackers to cause a denial of service (memory exhaustion and process crash) via a large number of HTTP requests."
+}{
+    "id": "CVE-2004-1502",
+    "cwe": "NVD-CWE-Other",
+    "summary": "The Telnet proxy in 602 Lan Suite 2004.0.04.0909 and earlier allows remote attackers to cause a denial of service (socket exhaustion) via a Telnet request to an IP address of the proxy's network interface, which causes a loop."
 }{
     "id": "CVE-2004-0222",
     "cwe": "NVD-CWE-Other",
@@ -1070,4 +1614,8 @@
     "id": "CVE-2002-1063",
     "cwe": "NVD-CWE-Other",
     "summary": "Thomas Hauck Jana Server 2.x through 2.2.1, and 1.4.6 and earlier, allows remote attackers to cause a denial of service (resource exhaustion) via a large number of FTP PASV requests, which consumes all available FTP ports."
+}{
+    "id": "CVE-2002-0460",
+    "cwe": "NVD-CWE-Other",
+    "summary": "Bitvise WinSSHD before 2002-03-16 allows remote attackers to cause a denial of service (resource exhaustion) via a large number of incomplete connections that are not properly terminated, which are not properly freed by SSHd."
 }
